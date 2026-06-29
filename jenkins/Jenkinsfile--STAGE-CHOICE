@@ -1,0 +1,181 @@
+pipeline {
+    agent none
+    parameters {
+        choice(name: 'CLUSTER_NAME', choices: ['diamond', 'graphite'], description: 'The name of the cluster that needs to be taking traffic.')
+        choice(name: 'VERSION', choices: ['4.0.0', '4.1.0', '5.0.0', '5.1.0'], description: 'Version of the artifact.')
+        choice(name: 'PROJECT', choices: ['project-name', 'project-name', 'project-name', 'project-name'], description: ' The project in which the cluster needs to activated')
+        extendedChoice description: 'Stage that needs to be (re)run', multiSelectDelimiter: ',', name: 'STAGE_CHOICE', quoteValue: false, saveJSONParameterToFile: false, type: 'PT_CHECKBOX', value:'ALL,BOM Parsing and Variable Population,Workload restore,Cluster labels as Active,Spinnaker Attachment As Active and workload validation in parallel,Shift Traffic RAMP UP,Manual Judgement to enable GTM Traffic Switch,Allow GTM traffic to new Cluster,Shift Traffic RAMP DOWN,Manual Judgement to disable GTM Traffic Switch,Disable GTM traffic to Old Cluster,manual judgement reducing messaging workload to zero,reducing messaging workload to zero,Build release image', visibleItemCount: 14
+    }
+    stages {
+        stage('BOM Parsing and Variable Population') {
+            when {
+                anyOf{
+                 expression { params.STAGE_CHOICE == 'ALL' }
+                 expression { params.STAGE_CHOICE.contains('BOM Parsing and Variable Population')}
+                 expression { params.STAGE_CHOICE.contains('Workload restore') || params.STAGE_CHOICE.contains('Cluster labels as Active') || params.STAGE_CHOICE.contains('Spinnaker Attachment As Active') || params.STAGE_CHOICE.contains('Shift Traffic RAMP UP') || params.STAGE_CHOICE.contains('Manual Judgement') || params.STAGE_CHOICE.contains('Allow GTM traffic to new Cluster') || params.STAGE_CHOICE.contains('Shift Traffic RAMP DOWN') || params.STAGE_CHOICE.contains('Disable GTM traffic to Old Cluster') || params.STAGE_CHOICE.contains('reducing messaging workload to zero')}
+                }
+            }
+            steps {
+                script {
+                    echo "we are running stage $STAGE_CHOICE"
+                }
+            }
+        }
+        stage('Workload restore') {
+            when {
+                anyOf{
+                 expression { params.STAGE_CHOICE == 'ALL' }
+                 expression { params.STAGE_CHOICE.contains('Workload restore')}
+                }                
+            }
+            steps {
+                script {
+                    echo "we are running stage $STAGE_CHOICE"
+                }
+            }
+        }
+        stage('Cluster labels as Active') {
+            when {
+                anyOf{
+                 expression { params.STAGE_CHOICE == 'ALL' }
+                 expression { params.STAGE_CHOICE.contains('Cluster labels as Active')}
+                }   
+            }
+            steps {
+                script {
+                    echo "we are running stage $STAGE_CHOICE"
+                }
+            }
+        }
+        stage('Spinnaker Attachment As Active and workload validation in parallel') {
+            when {
+                anyOf{
+                 expression { params.STAGE_CHOICE == 'ALL' }
+                 expression { params.STAGE_CHOICE.contains('Spinnaker Attachment As Active and workload validation in parallel')}
+                }   
+            }
+            steps {
+                script {
+                    echo "we are running stage $STAGE_CHOICE"
+                }
+            }
+        }
+        stage('Shift Traffic RAMP UP') {
+            when {
+                anyOf{
+                 expression { params.STAGE_CHOICE == 'ALL' }
+                 expression { params.STAGE_CHOICE.contains('Shift Traffic RAMP UP')}
+                }                   
+            }
+            steps {
+                script {
+                    echo "we are running stage $STAGE_CHOICE"
+                }
+            }
+        }
+        stage("Manual Judgement to enable GTM Traffic Switch") {
+            when {
+                anyOf{
+                 expression { params.STAGE_CHOICE == 'ALL' }
+                 expression { params.STAGE_CHOICE.contains('Manual Judgement to enable GTM Traffic Switch')}
+                }               
+            }
+            steps {
+                script {
+                    echo "we are running stage $STAGE_CHOICE"
+                }
+            }
+        }
+        stage('Allow GTM traffic to new Cluster') {
+            when {
+                anyOf{
+                 expression { params.STAGE_CHOICE == 'ALL' }
+                 expression { params.STAGE_CHOICE.contains('Allow GTM traffic to new Cluster')}
+                }                 
+            }
+            steps {
+                script {
+                    echo "we are running stage $STAGE_CHOICE"
+                }
+            }
+            }
+        stage('Shift Traffic RAMP DOWN') {
+            when {
+                anyOf{
+                 expression { params.STAGE_CHOICE == 'ALL' }
+                 expression { params.STAGE_CHOICE.contains('Shift Traffic RAMP DOWN')}
+                }                   
+            }
+            steps {
+                script {
+                    echo "we are running stage $STAGE_CHOICE"
+                }
+            }
+        }
+        stage("Manual Judgement to disable GTM Traffic Switch") {
+            when {
+                anyOf{
+                 expression { params.STAGE_CHOICE == 'ALL' }
+                 expression { params.STAGE_CHOICE.contains('Manual Judgement to disable GTM Traffic Switch')}
+                }                   
+            }
+            steps {
+                script {
+                    echo "we are running stage $STAGE_CHOICE"
+                }
+            }
+        }
+        stage('Disable GTM traffic to Old Cluster') {
+            when {
+                anyOf{
+                 expression { params.STAGE_CHOICE == 'ALL' }
+                 expression { params.STAGE_CHOICE.contains('Disable GTM traffic to Old Cluster')}
+                }                    
+            }
+            steps {
+                script {
+                    echo "we are running stage $STAGE_CHOICE"
+                }
+            }
+        }
+        stage('reducing messaging workload to zero manual judgement') {
+            when {
+                anyOf{
+                 expression { params.STAGE_CHOICE == 'ALL' }
+                 expression { params.STAGE_CHOICE.contains('manual judgement reducing messaging workload to zero')}
+                }                         
+            }
+            steps {
+                script {
+                    echo "we are running stage $STAGE_CHOICE"
+                }
+            }
+        }
+        stage('reducing messaging workload to zero') {
+            when {
+                anyOf{
+                 expression { params.STAGE_CHOICE == 'ALL' }
+                 expression { params.STAGE_CHOICE.contains('reducing messaging workload to zero')}
+                }                  
+            }
+            steps {
+                script {
+                    echo "we are running stage $STAGE_CHOICE"
+                }
+            }
+        }
+        stage('Build release image.') {
+            when {
+                anyOf{
+                 expression { params.STAGE_CHOICE == 'ALL' }
+                 expression { params.STAGE_CHOICE.contains('Build release image')}
+                }  
+            }
+            steps {
+                script {
+                    echo "we are running stage $STAGE_CHOICE"
+                }
+            }
+        }
+    }
+}

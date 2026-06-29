@@ -1,0 +1,32 @@
+# note-commands
+
+# Login to GCP via terminal
+gcloud auth application-default revoke
+gcloud auth application-default login
+gcloud auth login
+gcloud auth login --no-launch-browser
+gcloud config set project PROJECT_ID
+
+# Use SA instead your creds
+gcloud auth activate-service-account --key-file=file.json
+
+# Describe labelson cluster: 
+gcloud container clusters describe  cluster-name  --region us-east4 --format "value(resourceLabels)"
+
+# Login to bifrost(VM) from local
+gcloud beta compute ssh --internal-ip bifrost-name(vm_name) --project project-name --zone us-east4-a
+
+# Login to Node from cluster, where username -> run whoami. Project need to be set accordingly 
+gcloud beta compute ssh --internal-ip username@node-name
+
+# Bucket backup 
+gsutil ls
+gsutil cp gs://project-name/terraform/state/bucket-name/default.tfstate gs://project-name/terraform/state/bucket-name/default.tfstate_backup
+
+#Bucket list objects 
+gsutil ls -r gs://bucket_name
+
+# Advanced-authentication -> after auth lo your profile
+# https://cloud.google.com/container-registry/docs/advanced-authentication
+gcloud auth configure-docker
+

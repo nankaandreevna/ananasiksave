@@ -1,0 +1,1 @@
+ k get cm aws-auth -n kube-system -o yaml

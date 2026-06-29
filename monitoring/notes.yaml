@@ -1,0 +1,6 @@
+# 1. Quering notes
+
+=: Select labels that are exactly equal to the provided string.
+!=: Select labels that are not equal to the provided string.
+=~: Select labels that regex-match the provided string.
+!~: Select labels that do not regex-match the provided string.

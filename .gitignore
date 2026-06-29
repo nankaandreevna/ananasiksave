@@ -1,0 +1,4 @@
+# Credentials and local state — do not commit
+gcp/myCredentials.json
+**/terraform.tfstate
+**/terraform.tfstate.*

@@ -1,0 +1,12 @@
+pyyaml
+vaultcreds
+google-auth
+google-api-python-client
+google-api-core
+google-cloud-asset
+grpcio
+proto-plus
+urllib3
+setuptools
+httplib2
+google-auth-httplib2
