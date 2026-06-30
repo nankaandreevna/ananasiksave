@@ -5,10 +5,14 @@ WORKDIR /apps
 
 ENV PIP_CONFIG_FILE=pip.conf
 
-COPY pip.conf .
 COPY src/requirements.txt .
 
-RUN source /env && \
+RUN printf '%s\n' \
+    '[global]' \
+    'index-url = https://|USERNAME|:|PASSWORD|@artifactoryrepository.g.net/artifactory/api/pypi/pypi-dev/simple' \
+    'trusted-host = artifactoryrepository.g.net' \
+    > pip.conf && \
+    source /env && \
     if [ -z "$ARTIFACTORY_USERNAME" ] || [ -z "$ARTIFACTORY_API_KEY" ]; then \
         echo "ARTIFACTORY_USERNAME and ARTIFACTORY_API_KEY must be set" && exit 1; \
     fi && \
