@@ -1,11 +1,11 @@
-"""Shared runtime checks and Control 3 execution for prod and smoke entry points."""
+"""Shared runtime checks and Control 3 execution."""
 
 import logging
 import os
 from typing import Tuple
 
-PROD_CONFIG_PATH = "/apps/config/rabota_control_3.yaml"
-SMOKE_CONFIG_PATH = "/apps/config/rabota_control_3_smoke.yaml"
+CONFIG_PATH = "/apps/config/app_config.yaml"
+SMOKE_CONFIG_PATH = "/apps/config/app_config_smoke.yaml"
 
 VAULT_ENV_VARS: Tuple[str, ...] = (
     "CERT_FILE",
@@ -22,13 +22,13 @@ REQUIRED_ENV: Tuple[str, ...] = (
     "SOURCE_CREDENTIALS_GCP",
     "GOOGLE_DOMAIN_NAME",
     "GOOGLE_ORG_ID",
-    "RABOTA_CONTROL_3_CONFIG",
+    "APP_CHECK_CONFIG",
     *VAULT_ENV_VARS,
 )
 
 
 def resolve_config_path(default_path: str) -> str:
-    return os.environ.get("RABOTA_CONTROL_3_CONFIG", default_path)
+    return os.environ.get("APP_CHECK_CONFIG", default_path)
 
 
 def validate_required_env() -> None:
@@ -39,8 +39,8 @@ def validate_required_env() -> None:
 
 def validate_runtime() -> None:
     validate_required_env()
-    if os.environ.get("RUNNING_ENVIRONMENT") != "LIGHTSPEED":
-        raise ValueError("Must run in OpenShift (RUNNING_ENVIRONMENT=LIGHTSPEED)")
+    if os.environ.get("RUNNING_ENVIRONMENT") != "K8S_DEPLOY":
+        raise ValueError("Must run in container platform (RUNNING_ENVIRONMENT=K8S_DEPLOY)")
     if os.environ.get("SOURCE_CREDENTIALS_GCP") != "VAULT":
         raise ValueError("Must use Vault credentials (SOURCE_CREDENTIALS_GCP=VAULT)")
 
@@ -48,8 +48,8 @@ def validate_runtime() -> None:
 def run_control_3(config_path: str) -> int:
     validate_runtime()
 
-    from rabota_tool.control_3 import run
-    from rabota_tool.gcp_client import GcpPolicyClient
+    from audit_tool.control_3 import run
+    from audit_tool.gcp_client import GcpPolicyClient
 
     logging.info("Control 3 starting, config=%s", config_path)
     gcp = GcpPolicyClient()

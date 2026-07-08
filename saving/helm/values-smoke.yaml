@@ -1,9 +1,0 @@
-# Smoke overlay — merge: values.yaml + siroot-values.yaml + values-smoke.yaml
-
-job:
-  name: -smoke-job
-  restartPolicy: Never
-  backoffLimit: 1
-
-env:
-  AUDIT_CONTROL_3_CONFIG: /apps/config/audittool_config_smoke.yaml

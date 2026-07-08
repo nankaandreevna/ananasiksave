@@ -1,0 +1,5 @@
+# Edit before deploy — add your group pairs (no LDAP)
+
+privileged_group_pairs:
+  - membership_group: priv_membership_01
+    activation_group: priv_activation_01

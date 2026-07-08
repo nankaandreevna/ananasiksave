@@ -1,16 +1,16 @@
-"""Control 3 — membership group must not have crpa bindings (only tatata may)."""
+"""Control 3 — membership group must not have IAM bindings (only activation group may)."""
 
 from dataclasses import dataclass
 from typing import List
 
-from rabota_tool.config import get_group_pairs, load_config
-from rabota_tool.gcp_client import GcpPolicyClient
+from audit_tool.config import get_group_pairs, load_config
+from audit_tool.gcp_client import GcpPolicyClient
 
 
 @dataclass
 class Violation:
     membership_group: str
-    tatata: str
+    activation_group: str
     message: str
 
 
@@ -18,15 +18,15 @@ def run(config_path: str, gcp: GcpPolicyClient) -> List[Violation]:
     pairs = get_group_pairs(load_config(config_path))
     violations: List[Violation] = []
 
-    for membership, tatata in pairs:
+    for membership, activation_group in pairs:
         if gcp.is_group_in_any_policy(membership):
             violations.append(
                 Violation(
                     membership_group=membership,
-                    tatata=tatata,
+                    activation_group=activation_group,
                     message=(
-                        f"EC009 - {membership} has crpa bindings; "
-                        f"bindings must be on {tatata} only"
+                        f"C3-001 - {membership} has IAM bindings; "
+                        f"bindings must be on {activation_group} only"
                     ),
                 )
             )

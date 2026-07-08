@@ -1,4 +1,4 @@
-"""GCP crpa policy lookup — standalone, no external sync dependencies."""
+"""GCP IAM policy lookup — Vault credentials + Asset API."""
 
 import logging
 import os
@@ -24,12 +24,12 @@ class GcpPolicyClient:
         if not org_id or org_id.upper() == "N/A":
             raise ValueError("GOOGLE_ORG_ID env var is required")
         scope = f"organizations/{org_id}"
-        logger.info("Loading crpa allow policies from %s", scope)
+        logger.info("Loading IAM allow policies from %s", scope)
         self._policies = self._search_group_policies(scope)
         logger.info("Loaded %d group IAM policies", len(self._policies))
 
     def _load_vault_credentials(self):
-        from rabota_tool.runtime import VAULT_ENV_VARS
+        from audit_tool.runtime import VAULT_ENV_VARS
 
         missing = [key for key in VAULT_ENV_VARS if not os.environ.get(key)]
         if missing:

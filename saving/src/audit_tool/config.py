@@ -27,8 +27,8 @@ def get_group_pairs(config: Dict[str, Any]) -> List[GroupPair]:
     result: List[GroupPair] = []
     for item in pairs:
         membership = str(item["membership_group"]).split("@")[0].strip()
-        tatata = str(item["tatata"]).split("@")[0].strip()
-        if not membership or not tatata:
-            raise ValueError("each pair needs membership_group and tatata")
-        result.append((membership, tatata))
+        activation_group = str(item["activation_group"]).split("@")[0].strip()
+        if not membership or not activation_group:
+            raise ValueError("each pair needs membership_group and activation_group")
+        result.append((membership, activation_group))
     return result
