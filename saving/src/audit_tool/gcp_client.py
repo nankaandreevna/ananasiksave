@@ -1,4 +1,4 @@
-"""GCP IAM policy lookup — Vault credentials + Asset API."""
+"""GCP IAM policy lookup — local or Vault credentials + Asset API."""
 
 import logging
 import os
@@ -6,11 +6,14 @@ from typing import List
 
 import proto
 from google.api_core import exceptions
+from google.auth import default as google_auth_default
 from google.auth import exceptions as auth_exceptions
 from google.cloud import asset_v1
-from vaultcreds import VaultCreds
+from google.oauth2 import service_account
 
 logger = logging.getLogger(__name__)
+
+GCP_SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
 
 
 class GcpPolicyClient:
@@ -18,7 +21,7 @@ class GcpPolicyClient:
 
     def __init__(self) -> None:
         self.domain = os.environ["GOOGLE_DOMAIN_NAME"].lower()
-        self.credentials = self._load_vault_credentials()
+        self.credentials = self._load_credentials()
         self._asset = asset_v1.AssetServiceClient(credentials=self.credentials)
         org_id = os.environ.get("GOOGLE_ORG_ID", "").strip()
         if not org_id or org_id.upper() == "N/A":
@@ -28,8 +31,31 @@ class GcpPolicyClient:
         self._policies = self._search_group_policies(scope)
         logger.info("Loaded %d group IAM policies", len(self._policies))
 
+    def _load_credentials(self):
+        creds_source = os.environ.get("SOURCE_CREDENTIALS_GCP", "").upper()
+        if creds_source == "LOCAL":
+            return self._load_local_credentials()
+        if creds_source == "ADC":
+            return self._load_adc_credentials()
+        if creds_source == "VAULT":
+            return self._load_vault_credentials()
+        raise ValueError("SOURCE_CREDENTIALS_GCP must be LOCAL, ADC, or VAULT")
+
+    def _load_adc_credentials(self):
+        logger.info("Loading GCP credentials from application default credentials")
+        credentials, _ = google_auth_default(scopes=GCP_SCOPES)
+        return credentials
+
+    def _load_local_credentials(self):
+        key_path = os.environ["GCP_SERVICE_ACCOUNT_FILE"]
+        logger.info("Loading GCP credentials from local key file")
+        return service_account.Credentials.from_service_account_file(
+            key_path, scopes=GCP_SCOPES
+        )
+
     def _load_vault_credentials(self):
         from audit_tool.runtime import VAULT_ENV_VARS
+        from vaultcreds import VaultCreds
 
         missing = [key for key in VAULT_ENV_VARS if not os.environ.get(key)]
         if missing:
