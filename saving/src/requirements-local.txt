@@ -1,0 +1,13 @@
+# Local dev only (ADC or LOCAL key file) — no vaultcreds needed.
+# Use: pip install -r requirements-local.txt
+pyyaml
+google-auth
+google-api-python-client
+google-api-core
+google-cloud-asset
+grpcio
+proto-plus
+urllib3
+setuptools
+httplib2
+google-auth-httplib2
