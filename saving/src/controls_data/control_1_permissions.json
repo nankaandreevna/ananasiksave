@@ -1,0 +1,5707 @@
+[
+  {
+    "permission": "logging.locations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.locations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.views.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.views.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.buckets.copyLogEntries",
+    "permissionType": "DATA_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.buckets.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.exclusions.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.links.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.logScopes.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.sinks.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.views.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.buckets.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.exclusions.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.links.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.logScopes.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.sinks.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.views.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.buckets.get",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.settings.get",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.exclusions.get",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.links.get",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.logScopes.get",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.sinks.get",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.views.get",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.buckets.list",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.exclusions.list",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.links.list",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.logScopes.list",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.sinks.list",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.views.list",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.buckets.undelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.buckets.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.settings.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.exclusions.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.logScopes.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.sinks.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.views.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.logs.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.logEntries.list",
+    "permissionType": "DATA_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.privateLogEntries.list",
+    "permissionType": "DATA_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.views.access",
+    "permissionType": "DATA_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.logs.list",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.views.listLogs",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.logMetrics.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.logMetrics.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.logMetrics.get",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.logMetrics.list",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.logMetrics.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.operations.cancel",
+    "permissionType": "ADMIN_WRITE",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.operations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "logging.operations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "logging"
+  },
+  {
+    "permission": "pubsub.subscriptions.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.topics.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.subscriptions.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.topics.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.topics.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.topics.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.topics.detachSubscription",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.topics.get",
+    "permissionType": "DATA_READ",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.topics.list",
+    "permissionType": "DATA_READ",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.topics.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.schemas.commit",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.schemas.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.schemas.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.schemas.get",
+    "permissionType": "ADMIN_READ",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.schemas.listRevisions",
+    "permissionType": "ADMIN_READ",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.schemas.list",
+    "permissionType": "ADMIN_READ",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.schemas.rollback",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.schemas.validate",
+    "permissionType": "ADMIN_READ",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.snapshots.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.subscriptions.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.topics.attachSubscription",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.snapshots.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.subscriptions.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.snapshots.get",
+    "permissionType": "ADMIN_READ",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.subscriptions.get",
+    "permissionType": "DATA_READ",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.snapshots.list",
+    "permissionType": "ADMIN_READ",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.subscriptions.list",
+    "permissionType": "DATA_READ",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.subscriptions.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.snapshots.seek",
+    "permissionType": "ADMIN_READ",
+    "service": "pubsub"
+  },
+  {
+    "permission": "pubsub.snapshots.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "pubsub"
+  },
+  {
+    "permission": "bigquery.transfers.get",
+    "permissionType": "ADMIN_READ",
+    "service": "bigquery"
+  },
+  {
+    "permission": "bigquery.transfers.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "bigquery"
+  },
+  {
+    "permission": "resourcemanager.projects.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "bigquery"
+  },
+  {
+    "permission": "dns.resourceRecordSets.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.resourceRecordSets.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.resourceRecordSets.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.changes.get",
+    "permissionType": "ADMIN_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.changes.list",
+    "permissionType": "ADMIN_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.dnsKeys.get",
+    "permissionType": "DATA_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.dnsKeys.list",
+    "permissionType": "DATA_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.managedZones.list",
+    "permissionType": "ADMIN_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.managedZoneOperations.get",
+    "permissionType": "DATA_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.managedZoneOperations.list",
+    "permissionType": "DATA_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.managedZones.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.managedZones.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.managedZones.get",
+    "permissionType": "ADMIN_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.managedZones.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.managedZones.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.managedZones.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.policies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.policies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.policies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.policies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.policies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.projects.get",
+    "permissionType": "ADMIN_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.changes.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.resourceRecordSets.get",
+    "permissionType": "ADMIN_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.resourceRecordSets.list",
+    "permissionType": "ADMIN_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.responsePolicies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.responsePolicies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.responsePolicies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.responsePolicies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.responsePolicies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.responsePolicyRules.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.responsePolicyRules.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.responsePolicyRules.get",
+    "permissionType": "ADMIN_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.responsePolicyRules.list",
+    "permissionType": "ADMIN_READ",
+    "service": "dns"
+  },
+  {
+    "permission": "dns.responsePolicyRules.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dns"
+  },
+  {
+    "permission": "iam.roles.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.roles.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccounts.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccountKeys.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.roles.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccounts.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccountKeys.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccounts.disable",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccountKeys.disable",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccounts.enable",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccountKeys.enable",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccounts.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.roles.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccounts.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccountKeys.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccountKeys.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccounts.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccounts.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "resourcemanager.projects.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccounts.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.roles.undelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.serviceAccounts.undelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.roles.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.oauthClients.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.oauthClientCredentials.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.oauthClients.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.oauthClientCredentials.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.oauthClients.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.oauthClientCredentials.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.oauthClientCredentials.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.oauthClients.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.oauthClients.undelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.oauthClients.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.oauthClientCredentials.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePools.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePoolProviders.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePoolProviderKeys.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePools.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePoolProviders.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePoolProviderKeys.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePoolSubjects.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePools.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePools.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePoolProviders.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePoolProviderKeys.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePoolProviderKeys.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePoolProviders.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePools.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePools.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePools.undelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePoolProviders.undelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePoolProviderKeys.undelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePoolSubjects.undelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePools.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workforcePoolProviders.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolManagedIdentities.setAttestationRules",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPools.setAttestationRules",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPools.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolManagedIdentities.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolNamespaces.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolProviders.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolProviderKeys.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPools.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolManagedIdentities.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolNamespaces.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolProviders.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolProviderKeys.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "workloadIdentityPools.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPools.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPools.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolManagedIdentities.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolNamespaces.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolProviders.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolProviderKeys.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolManagedIdentities.getAttestationRules",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPools.getAttestationRules",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolManagedIdentities.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolNamespaces.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolProviderKeys.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolProviders.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPools.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "workloadIdentityPools.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPools.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPools.undelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolManagedIdentities.undelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolNamespaces.undelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolProviders.undelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolProviderKeys.undelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPools.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolManagedIdentities.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolNamespaces.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.workloadIdentityPoolProviders.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "denypolicies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "denypolicies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "denypolicies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "denypolicies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "denypolicies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "accessboundarypolicies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "projects.createPolicyBinding",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "principalaccessboundarypolicies.bind",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "projects.deletePolicyBinding",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "principalaccessboundarypolicies.unbind",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.policybindings.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.policybindings.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "projects.searchPolicyBindings",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "projects.updatePolicyBinding",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.principalaccessboundarypolicies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.principalaccessboundarypolicies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.principalaccessboundarypolicies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.principalaccessboundarypolicies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.principalaccessboundarypolicies.searchPolicyBindings",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.principalaccessboundarypolicies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "iam"
+  },
+  {
+    "permission": "folders.searchPolicyBindings",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "organizations.searchPolicyBindings",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "iam.operations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "iam"
+  },
+  {
+    "permission": "compute.acceleratorTypes.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.acceleratorTypes.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.reservations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.reservations.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.reservations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.reservations.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.reservations.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.reservations.resize",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.reservations.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.reservations.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.autoscalers.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.autoscalers.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.autoscalers.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.autoscalers.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceGroupManagers.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.autoscalers.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendBuckets.addSignedUrlKey",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendBuckets.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendBuckets.deleteSignedUrlKey",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendBuckets.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendBuckets.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendBuckets.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendBuckets.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendBuckets.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendBuckets.setSecurityPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.securityPolicies.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendBuckets.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendServices.addSignedUrlKey",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendServices.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendServices.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendServices.deleteSignedUrlKey",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendServices.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendServices.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendServices.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceGroups.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendServices.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.healthChecks.useReadOnly",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendServices.setSecurityPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendServices.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.diskTypes.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.diskTypes.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.addResourcePolicies",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.resourcePolicies.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.createSnapshot",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.snapshots.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.snapshots.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.removeResourcePolicies",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.resize",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.startAsyncReplication",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.stopAsyncReplication",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.stopGroupAsyncReplication",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.externalVpnGateways.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.externalVpnGateways.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.externalVpnGateways.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.externalVpnGateways.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.externalVpnGateways.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewallPolicies.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.organizations.setFirewallPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewallPolicies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewallPolicies.copyRules",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewallPolicies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewallPolicies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewallPolicies.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewallPolicies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewallPolicies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.organizations.listAssociations",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewallPolicies.move",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewallPolicies.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewalls.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.updatePolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewalls.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewalls.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewalls.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewalls.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalAddresses.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalAddresses.deleteInternal",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalAddresses.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalAddresses.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalAddresses.createInternal",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalAddresses.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalAddresses.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalForwardingRules.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalForwardingRules.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalAddresses.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalForwardingRules.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.subnetworks.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpProxies.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpsProxies.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalForwardingRules.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalForwardingRules.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalForwardingRules.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalForwardingRules.setTarget",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalNetworkEndpointGroups.attachNetworkEndpoints",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalNetworkEndpointGroups.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalNetworkEndpointGroups.detachNetworkEndpoints",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalNetworkEndpointGroups.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalNetworkEndpointGroups.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalNetworkEndpointGroups.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalOperations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalOperations.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalOperations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalPublicDelegatedPrefixes.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalPublicDelegatedPrefixes.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalPublicDelegatedPrefixes.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicAdvertisedPrefixes.updatePolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalPublicDelegatedPrefixes.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.globalPublicDelegatedPrefixes.updatePolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.healthChecks.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.healthChecks.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.healthChecks.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.healthChecks.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.healthChecks.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.httpHealthChecks.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.httpHealthChecks.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.httpHealthChecks.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.httpHealthChecks.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.httpHealthChecks.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.httpsHealthChecks.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.httpsHealthChecks.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.httpsHealthChecks.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.httpsHealthChecks.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.httpsHealthChecks.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.imageFamilyViews.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.images.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.images.deprecate",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.images.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.images.getFromFamily",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.images.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.images.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.images.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.images.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.images.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.images.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceGroupManagers.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceGroupManagers.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceGroupManagers.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceGroupManagers.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceGroups.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceGroups.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceGroups.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceGroups.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceGroups.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceSettings.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceSettings.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "iam.serviceAccounts.actAs",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceTemplates.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceTemplates.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceTemplates.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceTemplates.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceTemplates.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.subnetworks.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instanceTemplates.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.addresses.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.addAccessConfig",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.subnetworks.useExternalIp",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.addResourcePolicies",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.use",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.attachDisk",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.deleteAccessConfig",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.detachDisk",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.getEffectiveFirewalls",
+    "permissionType": "DATA_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.getGuestAttributes",
+    "permissionType": "DATA_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.getScreenshot",
+    "permissionType": "DATA_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.getSerialPortOutput",
+    "permissionType": "DATA_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.getShieldedInstanceIdentity",
+    "permissionType": "DATA_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.listReferrers",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.removeResourcePolicies",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.reset",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.resume",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.sendDiagnosticInterrupt",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.setDeletionProtection",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.setDiskAutoDelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.setMachineResources",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.setMachineType",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.setMetadata",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.setMinCpuPlatform",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.setName",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.setScheduling",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.setSecurityPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSecurityPolicies.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.setServiceAccount",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.setShieldedInstanceIntegrityPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.setTags",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.simulateMaintenanceEvent",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.start",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.startWithEncryptionKey",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.stop",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.suspend",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.updateAccessConfig",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.updateDisplayDevice",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.updateNetworkInterface",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.updateShieldedInstanceConfig",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instantSnapshots.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instantSnapshots.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instantSnapshots.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instantSnapshots.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.disks.useReadOnly",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instantSnapshots.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instantSnapshots.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instantSnapshots.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnectAttachments.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnectAttachments.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnectAttachments.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnectAttachments.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnects.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routers.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routers.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnectAttachments.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnectAttachments.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnectLocations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnectLocations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnectRemoteLocations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnectRemoteLocations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnects.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnects.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnects.getMacsecConfig",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnects.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnects.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnects.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.interconnects.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.licenseCodes.get",
+    "permissionType": "DATA_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.licenseCodes.list",
+    "permissionType": "DATA_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.licenses.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.licenses.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.licenses.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.licenses.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.licenses.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.licenses.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.machineImages.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.machineImages.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.machineImages.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.useReadOnly",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.machineImages.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.machineImages.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.machineImages.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.machineTypes.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.machineTypes.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkAttachments.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkAttachments.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkAttachments.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkAttachments.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkAttachments.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkAttachments.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkAttachments.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkEdgeSecurityServices.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkEdgeSecurityServices.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkEdgeSecurityServices.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkEdgeSecurityServices.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkEdgeSecurityServices.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkEndpointGroups.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkEndpointGroups.attachNetworkEndpoints",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkEndpointGroups.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkEndpointGroups.detachNetworkEndpoints",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkEndpointGroups.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkEndpointGroups.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.setFirewallPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.firewallPolicies.cloneRules",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkProfiles.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkProfiles.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.addPeering",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.getEffectiveFirewalls",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.listPeeringRoutes",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.removePeering",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.switchToCustomMode",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.updatePeering",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeGroups.addNodes",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeGroups.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeGroups.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeGroups.deleteNodes",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeGroups.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeGroups.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeGroups.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeGroups.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeGroups.performMaintenance",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeGroups.setNodeTemplate",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeGroups.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeGroups.simulateMaintenanceEvent",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeTemplates.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeTemplates.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeTemplates.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeTemplates.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeTemplates.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeTemplates.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeTypes.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.nodeTypes.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.packetMirrorings.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.packetMirrorings.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.packetMirrorings.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.instances.updateSecurity",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.mirror",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.packetMirrorings.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.packetMirrorings.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.subnetworks.mirror",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.organizations.disableXpnHost",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.organizations.disableXpnResource",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.projects.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "resourcemanager.projects.get",
+    "permissionType": "ADMIN_READ",
+    "service": "dataflow"
+  },
+  {
+    "permission": "compute.organizations.enableXpnHost",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.organizations.enableXpnResource",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.projects.setCloudArmorTier",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.projects.setCommonInstanceMetadata",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.projects.setDefaultNetworkTier",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.projects.setUsageExportBucket",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicAdvertisedPrefixes.announce",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicAdvertisedPrefixes.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicAdvertisedPrefixes.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicAdvertisedPrefixes.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicAdvertisedPrefixes.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicAdvertisedPrefixes.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicAdvertisedPrefixes.withdraw",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicDelegatedPrefixes.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicDelegatedPrefixes.announce",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicDelegatedPrefixes.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicDelegatedPrefixes.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicDelegatedPrefixes.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.addresses.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.addresses.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicDelegatedPrefixes.updatePolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.publicDelegatedPrefixes.withdraw",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.addresses.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.addresses.deleteInternal",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.addresses.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.addresses.createInternal",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.forwardingRules.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.addresses.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionBackendServices.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionBackendServices.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionBackendServices.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionBackendServices.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionHealthChecks.useReadOnly",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionBackendServices.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionBackendServices.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionBackendServices.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionBackendServices.setSecurityPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.commitments.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.commitments.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.commitments.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.commitments.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.snapshots.useReadOnly",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.snapshots.useReadOnlyAuditOnlyViewer",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.forwardingRules.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.forwardingRules.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.forwardingRules.pscDelete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.forwardingRules.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.forwardingRules.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.forwardingRules.setTarget",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionBackendServices.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetHttpsProxies.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionHealthCheckServices.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionHealthCheckServices.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networkEndpointGroups.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionHealthCheckServices.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionNotificationEndpoints.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionHealthCheckServices.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionHealthCheckServices.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionHealthChecks.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionHealthChecks.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionHealthChecks.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionHealthChecks.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionHealthChecks.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetPools.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionNetworkEndpointGroups.attachNetworkEndpoints",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionNetworkEndpointGroups.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionNetworkEndpointGroups.detachNetworkEndpoints",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionNetworkEndpointGroups.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionNetworkEndpointGroups.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionNetworkEndpointGroups.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionFirewallPolicies.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionFirewallPolicies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionFirewallPolicies.cloneRules",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionFirewallPolicies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionFirewallPolicies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.networks.getRegionEffectiveFirewalls",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionFirewallPolicies.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionFirewallPolicies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionFirewallPolicies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionFirewallPolicies.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionNotificationEndpoints.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionNotificationEndpoints.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionNotificationEndpoints.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionNotificationEndpoints.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionOperations.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionOperations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionOperations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routers.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routers.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routers.deleteRoutePolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routers.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routers.getRoutePolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routers.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routers.listBgpRoutes",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routers.listRoutePolicies",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routers.updateRoutePolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSecurityPolicies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSecurityPolicies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSecurityPolicies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSecurityPolicies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSecurityPolicies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSecurityPolicies.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSslCertificates.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSslCertificates.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSslCertificates.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSslCertificates.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSslPolicies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSslPolicies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSslPolicies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSslPolicies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSslPolicies.listAvailableFeatures",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSslPolicies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetHttpProxies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetHttpProxies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetHttpProxies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionUrlMaps.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetHttpProxies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetHttpProxies.setUrlMap",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetHttpsProxies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetHttpsProxies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetHttpsProxies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetHttpsProxies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionSslPolicies.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetHttpsProxies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetHttpsProxies.setSslCertificates",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetHttpsProxies.setUrlMap",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetTcpProxies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetTcpProxies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetTcpProxies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionTargetTcpProxies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionUrlMaps.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionUrlMaps.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionUrlMaps.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionUrlMaps.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionUrlMaps.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regionUrlMaps.validate",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.zones.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regions.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.regions.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.resourcePolicies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.resourcePolicies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.resourcePolicies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.resourcePolicies.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.resourcePolicies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.resourcePolicies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.resourcePolicies.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routes.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routes.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routes.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.routes.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.securityPolicies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.securityPolicies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.securityPolicies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.securityPolicies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.securityPolicies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.securityPolicies.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.serviceAttachments.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.serviceAttachments.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.serviceAttachments.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.serviceAttachments.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.forwardingRules.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.serviceAttachments.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.serviceAttachments.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.serviceAttachments.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.snapshotSettings.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.snapshotSettings.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.snapshots.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.snapshots.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.snapshots.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.snapshots.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.snapshots.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.sslCertificates.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.sslCertificates.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.sslCertificates.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.sslCertificates.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.sslPolicies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.sslPolicies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.sslPolicies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.sslPolicies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.sslPolicies.listAvailableFeatures",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.sslPolicies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.storagePoolTypes.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.storagePoolTypes.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.storagePools.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.storagePools.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.storagePools.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.storagePools.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.storagePools.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.storagePools.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.storagePools.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.subnetworks.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.subnetworks.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.subnetworks.expandIpCidrRange",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.subnetworks.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.subnetworks.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.subnetworks.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.subnetworks.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.subnetworks.setPrivateIpGoogleAccess",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetGrpcProxies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetGrpcProxies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetGrpcProxies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.urlMaps.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetGrpcProxies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetGrpcProxies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpProxies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpProxies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpProxies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpProxies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpProxies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpProxies.setUrlMap",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpsProxies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpsProxies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpsProxies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.sslPolicies.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpsProxies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpsProxies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpsProxies.setCertificateMap",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpsProxies.setQuicOverride",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpsProxies.setSslCertificates",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpsProxies.setSslPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetHttpsProxies.setUrlMap",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetInstances.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetInstances.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetInstances.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetInstances.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetInstances.setSecurityPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.httpHealthChecks.useReadOnly",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetPools.addHealthCheck",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetPools.addInstance",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetPools.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetPools.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetPools.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetPools.removeHealthCheck",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetPools.removeInstance",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetPools.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetPools.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetPools.setSecurityPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetSslProxies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetSslProxies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendServices.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetSslProxies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetSslProxies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetSslProxies.setBackendService",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetSslProxies.setCertificateMap",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetSslProxies.setProxyHeader",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetSslProxies.setSslCertificates",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetSslProxies.setSslPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetTcpProxies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetTcpProxies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetTcpProxies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetTcpProxies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetTcpProxies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetVpnGateways.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetVpnGateways.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetVpnGateways.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetVpnGateways.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.targetVpnGateways.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.urlMaps.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.urlMaps.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.urlMaps.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.urlMaps.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.urlMaps.invalidateCache",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.urlMaps.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.backendBuckets.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.urlMaps.validate",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.vpnGateways.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.vpnGateways.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.vpnGateways.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.vpnGateways.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.vpnGateways.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.vpnTunnels.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.vpnTunnels.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.vpnTunnels.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.externalVpnGateways.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.vpnGateways.use",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.vpnTunnels.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.vpnTunnels.setLabels",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.zoneOperations.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.zoneOperations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.zoneOperations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "compute.zones.get",
+    "permissionType": "ADMIN_READ",
+    "service": "compute"
+  },
+  {
+    "permission": "spanner.databases.read",
+    "permissionType": "DATA_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backupOperations.cancel",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databaseOperations.cancel",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instanceOperations.cancel",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instancePartitionOperations.cancel",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instancePartitionOperations.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backupOperations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databaseOperations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instanceOperations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backupOperations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databaseOperations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.adapt",
+    "permissionType": "DATA_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.select",
+    "permissionType": "DATA_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.sessions.create",
+    "permissionType": "DATA_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.addSplitPoints",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.changequorum",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backups.copy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backups.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.createBackup",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backupSchedules.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backups.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backupSchedules.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.drop",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backups.get",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backupSchedules.get",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.get",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.getDdl",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backups.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backupSchedules.list",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backups.list",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databaseRoles.list",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.list",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backups.restoreDatabase",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backups.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backups.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.backupSchedules.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.updateDdl",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instances.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instanceConfigs.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instancePartitions.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instances.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instanceConfigs.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instancePartitions.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instances.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instances.get",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instanceConfigs.get",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instancePartitions.get",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instanceConfigOperations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instanceConfigs.list",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instancePartitionOperations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instancePartitions.list",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instances.list",
+    "permissionType": "ADMIN_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instances.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instances.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instanceConfigs.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.instancePartitions.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.write",
+    "permissionType": "DATA_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.beginOrRollbackReadWriteTransaction",
+    "permissionType": "DATA_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.beginReadOnlyTransaction",
+    "permissionType": "DATA_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.sessions.delete",
+    "permissionType": "DATA_WRITE",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.sessions.get",
+    "permissionType": "DATA_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.sessions.list",
+    "permissionType": "DATA_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.partitionQuery",
+    "permissionType": "DATA_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "spanner.databases.partitionRead",
+    "permissionType": "DATA_READ",
+    "service": "spanner"
+  },
+  {
+    "permission": "artifactregistry.repositories.downloadArtifacts",
+    "permissionType": "DATA_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.repositories.uploadArtifacts",
+    "permissionType": "DATA_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.repositories.createOnPush",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.repositories.deleteArtifacts",
+    "permissionType": "DATA_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.repositories.readViaVirtualRepository",
+    "permissionType": "DATA_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.versions.delete",
+    "permissionType": "DATA_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.attachments.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.repositories.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.rules.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.tags.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.attachments.delete",
+    "permissionType": "DATA_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.files.delete",
+    "permissionType": "DATA_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.packages.delete",
+    "permissionType": "DATA_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.repositories.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.rules.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.tags.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.files.download",
+    "permissionType": "DATA_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.attachments.get",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.dockerimages.get",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.files.get",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.repositories.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.mavenartifacts.get",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.npmpackages.get",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.packages.get",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.projectsettings.get",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.pythonpackages.get",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.repositories.get",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.rules.get",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.tags.get",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.vpcscconfigs.get",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.versions.get",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.aptartifacts.create",
+    "permissionType": "DATA_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.googetartifacts.create",
+    "permissionType": "DATA_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.yumartifacts.create",
+    "permissionType": "DATA_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.attachments.list",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.dockerimages.list",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.files.list",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.mavenartifacts.list",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.npmpackages.list",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.packages.list",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.pythonpackages.list",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.repositories.list",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.rules.list",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.tags.list",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.versions.list",
+    "permissionType": "ADMIN_READ",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.repositories.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.files.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.packages.update",
+    "permissionType": "DATA_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.projectsettings.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.repositories.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.rules.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.tags.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.vpcscconfigs.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.versions.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.files.upload",
+    "permissionType": "DATA_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.gomodules.create",
+    "permissionType": "DATA_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "artifactregistry.kfpartifacts.create",
+    "permissionType": "DATA_WRITE",
+    "service": "artifact-registry"
+  },
+  {
+    "permission": "cloudsql.backupRuns.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.backupRuns.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.backupRuns.get",
+    "permissionType": "ADMIN_READ",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.backupRuns.list",
+    "permissionType": "ADMIN_READ",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.list",
+    "permissionType": "ADMIN_READ",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.backupRuns.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.databases.create",
+    "permissionType": "DATA_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.databases.delete",
+    "permissionType": "DATA_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.databases.get",
+    "permissionType": "DATA_READ",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.databases.list",
+    "permissionType": "DATA_READ",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.databases.update",
+    "permissionType": "DATA_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.addServerCa",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.clone",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.connect",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.demoteMaster",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.executeSql",
+    "permissionType": "DATA_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.export",
+    "permissionType": "DATA_READ",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.failover",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.get",
+    "permissionType": "ADMIN_READ",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.import",
+    "permissionType": "DATA_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.listServerCas",
+    "permissionType": "ADMIN_READ",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.login",
+    "permissionType": "DATA_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.migrate",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.promoteReplica",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.reencrypt",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.resetSslConfig",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.restart",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.restoreBackup",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.rotateServerCa",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.startReplica",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.stopReplica",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.truncateLog",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.instances.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.sslCerts.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.sslCerts.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.sslCerts.get",
+    "permissionType": "ADMIN_READ",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.sslCerts.list",
+    "permissionType": "ADMIN_READ",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.users.create",
+    "permissionType": "DATA_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.users.delete",
+    "permissionType": "DATA_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.users.get",
+    "permissionType": "DATA_READ",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.users.list",
+    "permissionType": "DATA_READ",
+    "service": "sql"
+  },
+  {
+    "permission": "cloudsql.users.update",
+    "permissionType": "DATA_WRITE",
+    "service": "sql"
+  },
+  {
+    "permission": "secretmanager.locations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.locations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.versions.access",
+    "permissionType": "DATA_READ",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.versions.add",
+    "permissionType": "ADMIN_WRITE",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.secrets.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.secrets.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.versions.destroy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.versions.disable",
+    "permissionType": "ADMIN_WRITE",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.versions.enable",
+    "permissionType": "ADMIN_WRITE",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.secrets.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.secrets.get",
+    "permissionType": "ADMIN_READ",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.versions.get",
+    "permissionType": "ADMIN_READ",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.versions.list",
+    "permissionType": "ADMIN_READ",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.secrets.list",
+    "permissionType": "ADMIN_READ",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.secrets.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "secretmanager.secrets.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "secret-manager"
+  },
+  {
+    "permission": "dataflow.jobs.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dataflow"
+  },
+  {
+    "permission": "dataflow.jobs.cancel",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dataflow"
+  },
+  {
+    "permission": "dataflow.jobs.updateContents",
+    "permissionType": "ADMIN_WRITE",
+    "service": "dataflow"
+  },
+  {
+    "permission": "run.locations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.authorizeddomains.list",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.configurations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.configurations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.domainmappings.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.domainmappings.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.domainmappings.get",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.domainmappings.list",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.executions.cancel",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.executions.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.executions.get",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.executions.list",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.jobs.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.jobs.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.jobs.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.jobs.get",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.jobs.list",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.jobs.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.jobs.run",
+    "permissionType": "DATA_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.jobs.runWithOverrides",
+    "permissionType": "DATA_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.jobs.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.revisions.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.revisions.get",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.revisions.list",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.routes.get",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.routes.list",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.services.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.operations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.services.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.services.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.services.get",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.services.list",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.services.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.services.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.tasks.get",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.tasks.list",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "cloudbuild.builds.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.locations.exportImage",
+    "permissionType": "DATA_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.locations.exportMetadata",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.workerpools.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.workerpools.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.workerpools.get",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.workerpools.list",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "run.workerpools.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.operations.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "run"
+  },
+  {
+    "permission": "run.operations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "run"
+  },
+  {
+    "permission": "alloydb.backups.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.clusters.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.instances.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.users.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.backups.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.clusters.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.instances.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.users.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.instances.executeSql",
+    "permissionType": "DATA_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.instances.executeSqlReadOnly",
+    "permissionType": "DATA_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.users.login",
+    "permissionType": "DATA_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.clusters.export",
+    "permissionType": "DATA_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.instances.failover",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.clusters.generateClientCertificate",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.backups.get",
+    "permissionType": "ADMIN_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.clusters.get",
+    "permissionType": "ADMIN_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.instances.get",
+    "permissionType": "ADMIN_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.users.get",
+    "permissionType": "ADMIN_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.clusters.import",
+    "permissionType": "DATA_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.instances.injectFault",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.backups.list",
+    "permissionType": "ADMIN_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.clusters.list",
+    "permissionType": "ADMIN_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.databases.list",
+    "permissionType": "ADMIN_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.instances.list",
+    "permissionType": "ADMIN_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.users.list",
+    "permissionType": "ADMIN_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.clusters.promote",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.instances.restart",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.clusters.switchover",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.backups.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.clusters.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.instances.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.users.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.clusters.upgrade",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.databases.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.endpoints.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.endpoints.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.endpoints.get",
+    "permissionType": "ADMIN_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.endpoints.list",
+    "permissionType": "ADMIN_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.endpoints.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.operations.cancel",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.operations.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.operations.get",
+    "permissionType": "ADMIN_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "alloydb.operations.list",
+    "permissionType": "ADMIN_READ",
+    "service": "alloydb"
+  },
+  {
+    "permission": "accesscontextmanager.servicePerimeters.commit",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.accessLevels.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.policies.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.authorizedOrgsDescs.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.gcpUserAccessBindings.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.servicePerimeters.create",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.accessLevels.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.policies.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.authorizedOrgsDescs.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.gcpUserAccessBindings.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.servicePerimeters.delete",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.accessLevels.get",
+    "permissionType": "ADMIN_READ",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.policies.get",
+    "permissionType": "ADMIN_READ",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.authorizedOrgsDescs.get",
+    "permissionType": "ADMIN_READ",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.gcpUserAccessBindings.get",
+    "permissionType": "ADMIN_READ",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.policies.getIamPolicy",
+    "permissionType": "ADMIN_READ",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.servicePerimeters.get",
+    "permissionType": "ADMIN_READ",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.accessLevels.list",
+    "permissionType": "ADMIN_READ",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.policies.list",
+    "permissionType": "ADMIN_READ",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.authorizedOrgsDescs.list",
+    "permissionType": "ADMIN_READ",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.gcpUserAccessBindings.list",
+    "permissionType": "ADMIN_READ",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.servicePerimeters.list",
+    "permissionType": "ADMIN_READ",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.accessLevels.replaceAll",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.servicePerimeters.replaceAll",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.policies.setIamPolicy",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.accessLevels.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.policies.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.authorizedOrgsDescs.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.gcpUserAccessBindings.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  },
+  {
+    "permission": "accesscontextmanager.servicePerimeters.update",
+    "permissionType": "ADMIN_WRITE",
+    "service": "access-context-manager"
+  }
+]

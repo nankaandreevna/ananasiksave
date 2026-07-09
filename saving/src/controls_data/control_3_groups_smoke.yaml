@@ -1,4 +1,4 @@
-# Bundled smoke config for dev
+# Smoke group pairs for Control 3
 
 privileged_group_pairs:
   - membership_group: priv_membership_01

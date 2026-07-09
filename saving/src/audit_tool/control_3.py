@@ -1,4 +1,4 @@
-"""Control 3 — membership group must not have IAM bindings (only activation group may)."""
+"""Control 3 — membership group must not have iam bindings (only activation_group may)."""
 
 from dataclasses import dataclass
 from typing import List
@@ -25,7 +25,7 @@ def run(config_path: str, gcp: GcpPolicyClient) -> List[Violation]:
                     membership_group=membership,
                     activation_group=activation_group,
                     message=(
-                        f"C3-001 - {membership} has IAM bindings; "
+                        f"C3-001 - {membership} has iam bindings; "
                         f"bindings must be on {activation_group} only"
                     ),
                 )

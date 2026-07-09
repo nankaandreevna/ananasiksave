@@ -18,11 +18,14 @@ _SENSITIVE_ENV = frozenset(
 
 def run() -> int:
     if not os.environ.get("APP_CHECK_CONFIG"):
-        local_config = resolve_smoke_config_path()
-        if os.path.isfile(local_config):
-            os.environ["APP_CHECK_CONFIG"] = local_config
+        os.environ["APP_CHECK_CONFIG"] = resolve_smoke_config_path()
 
     config_path = resolve_smoke_config_path()
+    if not os.path.isfile(config_path):
+        raise FileNotFoundError(
+            f"Smoke config not found: {config_path}. "
+            "Create controls_data/control_3_groups_smoke.yaml or set APP_CHECK_CONFIG."
+        )
 
     logging.info("=== Smoke test start ===")
 
