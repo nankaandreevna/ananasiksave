@@ -30,3 +30,32 @@ def run(name: str) -> int:
         available = ", ".join(list_tests()) or "(none)"
         raise ValueError(f"Unknown test '{name}'. Available: {available}")
     return _TESTS[name]()
+
+
+def run_all(exclude: tuple = ("smoke",)) -> int:
+    """Run every registered test except smoke (smoke duplicates control_3).
+
+    Exit 1 if any test fails; new controls are picked up automatically.
+    """
+    import logging
+
+    names = [n for n in list_tests() if n not in exclude]
+    if not names:
+        raise ValueError("No tests to run (only smoke registered?)")
+
+    logging.info("Running all tests: %s", ", ".join(names))
+    failed = []
+    for name in names:
+        logging.info("=== Start %s ===", name)
+        code = _TESTS[name]()
+        if code != 0:
+            logging.error("=== %s failed exit=%s ===", name, code)
+            failed.append(name)
+        else:
+            logging.info("=== %s passed ===", name)
+
+    if failed:
+        logging.error("Failed tests: %s", ", ".join(failed))
+        return 1
+    logging.info("All tests passed: %s", ", ".join(names))
+    return 0

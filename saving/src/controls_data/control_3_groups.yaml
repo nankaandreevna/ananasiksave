@@ -1,5 +1,6 @@
 # Edit before deploy — add your group pairs (no LDAP)
+# activation_group must be membership_group + ACTIVATION_GROUP_SUFFIX (default _ActivationGroup)
 
 privileged_group_pairs:
   - membership_group: priv_membership_01
-    activation_group: priv_activation_01
+    activation_group: priv_membership_01_ActivationGroup

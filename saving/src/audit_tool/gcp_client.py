@@ -8,6 +8,7 @@ import proto
 from google.api_core import exceptions
 from google.auth import default as google_auth_default
 from google.auth import exceptions as auth_exceptions
+from google.auth import impersonated_credentials
 from google.cloud import asset_v1
 from google.oauth2 import service_account
 
@@ -16,18 +17,77 @@ logger = logging.getLogger(__name__)
 GCP_SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
 
 
+def _maybe_impersonate(source_credentials):
+    """Optionally wrap credentials to act as a target SA (deny-test style)."""
+    target = os.environ.get("GCP_IMPERSONATE_SERVICE_ACCOUNT", "").strip()
+    if not target:
+        return source_credentials
+    logger.info("Impersonating service account %s", target)
+    return impersonated_credentials.Credentials(
+        source_credentials=source_credentials,
+        target_principal=target,
+        target_scopes=GCP_SCOPES,
+        lifetime=3600,
+    )
+
+
+def resolve_credentials_identity(credentials) -> str:
+    """Best-effort caller identity for smoke/local logging."""
+    email = getattr(credentials, "service_account_email", None)
+    if email:
+        return email
+
+    if isinstance(credentials, impersonated_credentials.Credentials):
+        target = getattr(credentials, "_service_account_email", None) or getattr(
+            credentials, "service_account_email", None
+        )
+        if target:
+            return target
+
+    configured = os.environ.get("GCP_IMPERSONATE_SERVICE_ACCOUNT", "").strip()
+    if configured:
+        return f"{configured} (GCP_IMPERSONATE_SERVICE_ACCOUNT)"
+
+    # User ADC / unknown — ask Google who the access token belongs to
+    try:
+        from google.auth.transport.requests import Request
+        import urllib.request
+
+        credentials.refresh(Request())
+        token = credentials.token
+        if not token:
+            return "unknown (no access token)"
+        req = urllib.request.Request(
+            f"https://oauth2.googleapis.com/tokeninfo?access_token={token}"
+        )
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            import json
+
+            info = json.loads(resp.read().decode())
+        return (
+            info.get("email")
+            or info.get("azp")
+            or info.get("sub")
+            or "unknown (tokeninfo had no email)"
+        )
+    except Exception as exc:
+        logger.warning("Could not resolve credentials identity: %s", exc)
+        return f"unknown ({type(credentials).__name__})"
+
+
 def load_gcp_credentials():
     creds_source = os.environ.get("SOURCE_CREDENTIALS_GCP", "").upper()
     if creds_source == "LOCAL":
         key_path = os.environ["GCP_SERVICE_ACCOUNT_FILE"]
         logger.info("Loading GCP credentials from local key file")
-        return service_account.Credentials.from_service_account_file(
+        credentials = service_account.Credentials.from_service_account_file(
             key_path, scopes=GCP_SCOPES
         )
+        return _maybe_impersonate(credentials)
     if creds_source == "ADC":
         logger.info("Loading GCP credentials from application default credentials")
         credentials, _ = google_auth_default(scopes=GCP_SCOPES)
-        return credentials
+        return _maybe_impersonate(credentials)
     if creds_source == "VAULT":
         from audit_tool.runtime import VAULT_ENV_VARS
         from vaultcreds import VaultCreds

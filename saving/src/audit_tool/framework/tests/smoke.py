@@ -4,6 +4,7 @@ import logging
 import os
 
 from audit_tool.config import get_group_pairs, load_config
+from audit_tool.gcp_client import load_gcp_credentials, resolve_credentials_identity
 from audit_tool.runtime import (
     get_required_env,
     resolve_smoke_config_path,
@@ -39,6 +40,16 @@ def run() -> int:
             logging.info("  %s: set", name)
         else:
             logging.info("  %s: %s", name, os.environ.get(name))
+    if os.environ.get("GCP_IMPERSONATE_SERVICE_ACCOUNT"):
+        logging.info(
+            "  GCP_IMPERSONATE_SERVICE_ACCOUNT: %s",
+            os.environ["GCP_IMPERSONATE_SERVICE_ACCOUNT"],
+        )
+    if os.environ.get("GOOGLE_CLOUD_QUOTA_PROJECT"):
+        logging.info(
+            "  GOOGLE_CLOUD_QUOTA_PROJECT: %s",
+            os.environ["GOOGLE_CLOUD_QUOTA_PROJECT"],
+        )
     validate_runtime()
     logging.info("Smoke step 1/3 ok")
 
@@ -52,6 +63,9 @@ def run() -> int:
     logging.info(
         "Smoke step 3/3: %s GCP credentials, Asset API, Control 3", creds_mode
     )
+    credentials = load_gcp_credentials()
+    identity = resolve_credentials_identity(credentials)
+    logging.info("  running as: %s", identity)
     result = run_control_3(config_path)
-    logging.info("=== Smoke test finished exit=%s ===", result)
+    logging.info("=== Smoke test finished exit=%s (ran as %s) ===", result, identity)
     return result

@@ -1,4 +1,4 @@
-"""Control 3 — membership group must not have iam bindings (only activation_group may)."""
+"""Control 3 — membership group must not have IAM bindings (only activation_group may)."""
 
 from dataclasses import dataclass
 from typing import List
