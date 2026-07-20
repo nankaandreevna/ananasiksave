@@ -16,8 +16,13 @@ logger = logging.getLogger(__name__)
 
 GCP_SCOPES = [
     "https://www.googleapis.com/auth/cloud-platform",
-    "https://www.googleapis.com/auth/admin.directory.group.readonly",
 ]
+# Directory scope is sensitive — Google often blocks it on gcloud ADC login
+# ("This app is blocked"). Only needed when AUDIT_CHECK_GROUP_EXISTS=true
+# and the identity is allowed to use Admin Directory.
+GCP_DIRECTORY_SCOPE = (
+    "https://www.googleapis.com/auth/admin.directory.group.readonly"
+)
 
 
 def _maybe_impersonate(source_credentials):
@@ -166,6 +171,11 @@ class GcpPolicyClient:
             )
         return self._directory
 
+    def group_exists_check_enabled(self) -> bool:
+        """Whether Control 3 should verify groups in Cloud Identity first."""
+        raw = os.environ.get("AUDIT_CHECK_GROUP_EXISTS", "true").strip().lower()
+        return raw in ("1", "true", "yes", "y")
+
     def group_exists(self, group_name: str) -> bool:
         """True if group exists in Cloud Identity / Workspace Directory."""
         from googleapiclient.errors import HttpError
@@ -180,6 +190,17 @@ class GcpPolicyClient:
             if exc.resp is not None and exc.resp.status == 404:
                 logger.info("Group %s does not exist in Cloud Identity", email)
                 return False
+            status = getattr(exc.resp, "status", None)
+            if status in (401, 403):
+                raise PermissionError(
+                    f"Cloud Identity lookup denied for {email} (HTTP {status}). "
+                    "ADC login with admin.directory.group.readonly is often blocked "
+                    "by Google ('This app is blocked'). Options: "
+                    "(1) export AUDIT_CHECK_GROUP_EXISTS=false for local binding-only runs; "
+                    "(2) use a service account with Directory access / domain-wide delegation; "
+                    "(3) ask Workspace admin to allow the gcloud OAuth client. "
+                    f"Original: {exc}"
+                ) from exc
             logger.warning("Cloud Identity lookup failed for %s: %s", email, exc)
             raise
         except (TimeoutError, OSError) as exc:
