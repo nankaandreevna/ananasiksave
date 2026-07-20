@@ -148,12 +148,20 @@ class GcpPolicyClient:
 
     def _directory_service(self):
         if self._directory is None:
+            import google_auth_httplib2
+            import httplib2
             from googleapiclient.discovery import build
 
+            # Asset API often works while Directory hangs without an explicit
+            # HTTP timeout (corp proxy / VPN). Default socket timeout is too vague.
+            timeout_s = int(os.environ.get("GCP_DIRECTORY_TIMEOUT_SECONDS", "60"))
+            http = google_auth_httplib2.AuthorizedHttp(
+                self.credentials, http=httplib2.Http(timeout=timeout_s)
+            )
             self._directory = build(
                 "admin",
                 "directory_v1",
-                credentials=self.credentials,
+                http=http,
                 cache_discovery=False,
             )
         return self._directory
@@ -174,6 +182,12 @@ class GcpPolicyClient:
                 return False
             logger.warning("Cloud Identity lookup failed for %s: %s", email, exc)
             raise
+        except (TimeoutError, OSError) as exc:
+            raise TimeoutError(
+                f"Cloud Identity lookup timed out for {email}. "
+                "Confirm VPN/proxy (https_proxy) is set, then retry. "
+                f"Optional: export GCP_DIRECTORY_TIMEOUT_SECONDS=120. Original: {exc}"
+            ) from exc
 
     def _search_group_policies(self, scope: str) -> List[dict]:
         results: List[dict] = []
