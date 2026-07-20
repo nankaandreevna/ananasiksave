@@ -30,7 +30,7 @@ def run() -> int:
         raise FileNotFoundError(
             f"Negative smoke config not found: {config_path}. "
             "Create controls_data/control_3_groups_smoke_negative.yaml "
-            "or set APP_CHECK_NEGATIVE_CONFIG."
+            "or set APP_CHECK_SMOKE_NEGATIVE_CONFIG."
         )
 
     logging.info("=== Smoke negative test start ===")

@@ -32,8 +32,8 @@ def run(name: str) -> int:
     return _TESTS[name]()
 
 
-def run_all(exclude: tuple = ("smoke", "smoke_negative")) -> int:
-    """Run every registered test except smoke suites (they duplicate control_3).
+def run_all(exclude: tuple = ("smoke", "smoke_negative", "control_3_negative")) -> int:
+    """Run every registered test except smoke / negative suites.
 
     Exit 1 if any test fails; new controls are picked up automatically.
     """
@@ -41,7 +41,7 @@ def run_all(exclude: tuple = ("smoke", "smoke_negative")) -> int:
 
     names = [n for n in list_tests() if n not in exclude]
     if not names:
-        raise ValueError("No tests to run (only smoke suites registered?)")
+        raise ValueError("No tests to run (only smoke/negative suites registered?)")
 
     logging.info("Running all tests: %s", ", ".join(names))
     failed = []

@@ -5,8 +5,10 @@ from pathlib import Path
 from typing import Tuple
 
 from audit_tool.framework.paths import (
+    CONTROL_3_GROUPS_NEGATIVE,
     CONTROL_3_GROUPS_SMOKE,
     CONTROL_3_GROUPS_SMOKE_NEGATIVE,
+    DEPLOY_CONTROL_3_GROUPS_NEGATIVE,
     DEPLOY_CONTROL_3_GROUPS_SMOKE,
     DEPLOY_CONTROL_3_GROUPS_SMOKE_NEGATIVE,
 )
@@ -72,12 +74,22 @@ def resolve_smoke_config_path() -> str:
 
 def resolve_smoke_negative_config_path() -> str:
     """Negative smoke config — ignores APP_CHECK_CONFIG (positive leftover)."""
-    override = os.environ.get("APP_CHECK_NEGATIVE_CONFIG", "").strip()
+    override = os.environ.get("APP_CHECK_SMOKE_NEGATIVE_CONFIG", "").strip()
     if override:
         return override
     if os.path.isfile(DEPLOY_CONTROL_3_GROUPS_SMOKE_NEGATIVE):
         return DEPLOY_CONTROL_3_GROUPS_SMOKE_NEGATIVE
     return str(CONTROL_3_GROUPS_SMOKE_NEGATIVE)
+
+
+def resolve_control_3_negative_config_path() -> str:
+    """Negative Control 3 config — production-style known-bad pairs."""
+    override = os.environ.get("APP_CHECK_NEGATIVE_CONFIG", "").strip()
+    if override:
+        return override
+    if os.path.isfile(DEPLOY_CONTROL_3_GROUPS_NEGATIVE):
+        return DEPLOY_CONTROL_3_GROUPS_NEGATIVE
+    return str(CONTROL_3_GROUPS_NEGATIVE)
 
 
 def validate_auth_runtime() -> None:
