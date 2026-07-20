@@ -1,6 +1,7 @@
 """Control 3 — membership group must not have IAM bindings (only activation_group may)."""
 
 import logging
+import os
 from dataclasses import dataclass
 from typing import List
 
@@ -15,11 +16,24 @@ class Violation:
     message: str
 
 
+def _existence_check_enabled() -> bool:
+    raw = os.environ.get("AUDIT_CHECK_GROUP_EXISTS", "true").strip().lower()
+    return raw in ("1", "true", "yes", "y")
+
+
 def run(config_path: str, gcp: GcpPolicyClient) -> List[Violation]:
     pairs = get_group_pairs(load_config(config_path))
     violations: List[Violation] = []
-    check_exists = gcp.group_exists_check_enabled()
-    if not check_exists:
+    # Env check lives here (not on GcpPolicyClient) so a partial gcp_client
+    # sync cannot raise AttributeError for group_exists_check_enabled.
+    check_exists = _existence_check_enabled()
+    if check_exists and not hasattr(gcp, "group_exists"):
+        logging.warning(
+            "GcpPolicyClient has no group_exists(); skipping Cloud Identity "
+            "existence checks. Sync gcp_client.py or set AUDIT_CHECK_GROUP_EXISTS=false."
+        )
+        check_exists = False
+    elif not check_exists:
         logging.info(
             "Skipping Cloud Identity existence checks "
             "(AUDIT_CHECK_GROUP_EXISTS=false)"
