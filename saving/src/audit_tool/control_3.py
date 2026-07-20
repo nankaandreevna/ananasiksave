@@ -71,10 +71,12 @@ def run(config_path: str, gcp: GcpPolicyClient) -> List[Violation]:
                 )
                 continue
 
+        membership_email = gcp.group_email(membership)
+        activation_email = gcp.group_email(activation_group)
         if gcp.is_group_in_any_policy(membership):
             message = (
-                f"C3-001 - Group {membership} has iam bindings; "
-                f"bindings must be on {activation_group} only"
+                f"C3-001 - Group {membership_email} has iam bindings; "
+                f"bindings must be on {activation_email} only"
             )
             logging.info(message)
             violations.append(
@@ -87,6 +89,6 @@ def run(config_path: str, gcp: GcpPolicyClient) -> List[Violation]:
         else:
             logging.info(
                 "membership group %s doesn't have any bindings - SUCCESS",
-                membership,
+                membership_email,
             )
     return violations
