@@ -1,4 +1,4 @@
-"""Entry point — run registered audit tests: smoke, control_1, control_3, all, ..."""
+"""Entry point — run registered audit tests: smoke, smoke_negative, control_1, control_3, all, ..."""
 
 import logging
 import os

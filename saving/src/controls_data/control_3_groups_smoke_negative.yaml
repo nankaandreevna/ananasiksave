@@ -1,0 +1,10 @@
+# Negative smoke pairs for Control 3
+# membership_group MUST have IAM allow bindings as group:<name>@GOOGLE_GROUP_DOMAIN_NAME
+# activation_group must be membership_group + ACTIVATION_GROUP_SUFFIX (default _ActivationGroup)
+#
+# smoke_negative PASSES when Control 3 finds C3-001 violations.
+# Replace the pair below with a known-bad membership group in your org.
+
+privileged_group_pairs:
+  - membership_group: REPLACE_WITH_GROUP_THAT_HAS_IAM_BINDINGS
+    activation_group: REPLACE_WITH_GROUP_THAT_HAS_IAM_BINDINGS_ActivationGroup

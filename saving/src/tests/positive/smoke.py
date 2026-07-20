@@ -1,16 +1,16 @@
-"""Control 3 smoke run with step logging."""
+"""Positive Control 3 smoke — expect no IAM bindings on membership groups."""
 
 import logging
 import os
 
-from audit_tool.config import get_group_pairs, load_config
-from audit_tool.gcp_client import load_gcp_credentials, resolve_credentials_identity
-from audit_tool.runtime import (
+from audit_tool.framework.config import get_group_pairs, load_config
+from audit_tool.framework.gcp_client import load_gcp_credentials, resolve_credentials_identity
+from audit_tool.framework.runtime import (
     get_required_env,
     resolve_smoke_config_path,
-    run_control_3,
     validate_runtime,
 )
+from tests.positive.control_3 import run_with_config
 
 _SENSITIVE_ENV = frozenset(
     {"VAULTED_GCP_SERVICE_ACCOUNT", "GCP_SERVICE_ACCOUNT_FILE"}
@@ -28,7 +28,7 @@ def run() -> int:
             "Create controls_data/control_3_groups_smoke.yaml or set APP_CHECK_CONFIG."
         )
 
-    logging.info("=== Smoke test start ===")
+    logging.info("=== Smoke test start (positive) ===")
 
     logging.info("Smoke step 1/3: runtime environment")
     required = get_required_env()
@@ -66,6 +66,6 @@ def run() -> int:
     credentials = load_gcp_credentials()
     identity = resolve_credentials_identity(credentials)
     logging.info("  running as: %s", identity)
-    result = run_control_3(config_path)
+    result = run_with_config(config_path)
     logging.info("=== Smoke test finished exit=%s (ran as %s) ===", result, identity)
     return result

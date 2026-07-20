@@ -1,4 +1,7 @@
-"""Control 1 — privileged roles and external principals on IAM bindings."""
+"""Control 1 — privileged roles and external principals on IAM bindings.
+
+Positive CLI entry: python main.py control_1
+"""
 
 import json
 import logging
@@ -10,11 +13,11 @@ from google.cloud import asset_v1
 from googleapiclient import discovery
 from googleapiclient.errors import HttpError
 
-from audit_tool.gcp_client import load_gcp_credentials
+from audit_tool.framework.gcp_client import load_gcp_credentials
+from audit_tool.framework.paths import CONTROL_1_PERMISSIONS
+from audit_tool.framework.runtime import validate_auth_runtime
 
 logger = logging.getLogger(__name__)
-
-from audit_tool.paths import CONTROL_1_PERMISSIONS
 
 DEFAULT_PRIVILEGED_ROLES = {
     "roles/owner",
@@ -69,7 +72,8 @@ def resolve_audit_scope() -> str:
     raise ValueError("Set AUDIT_SCOPE or GOOGLE_ORG_ID")
 
 
-def run() -> List[str]:
+def evaluate() -> List[str]:
+    """Run Control 1 checks; return finding messages (empty = pass)."""
     scope = resolve_audit_scope()
     org_domain = os.environ["GOOGLE_DOMAIN_NAME"].lower()
     group_domain = os.environ.get("GOOGLE_GROUP_DOMAIN_NAME", org_domain).lower()
@@ -207,3 +211,16 @@ def get_roles() -> List[dict]:
             logger.error("Error getting permissions for role %s: %s", name, exc)
 
     return roles
+
+
+def run() -> int:
+    """CLI entry for python main.py control_1. 0 = pass, 1 = findings."""
+    validate_auth_runtime()
+    logging.info("Control 1 starting")
+    findings = evaluate()
+    if findings:
+        for msg in findings:
+            logging.error(msg)
+        return 1
+    logging.info("Control 1 passed")
+    return 0

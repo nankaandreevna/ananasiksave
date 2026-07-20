@@ -1,15 +1,14 @@
-"""Shared runtime — env validation and control runners."""
+"""Shared runtime — env validation and config path helpers (no control logic)."""
 
-import logging
 import os
 from pathlib import Path
 from typing import Tuple
 
-from audit_tool.paths import (
-    CONTROL_3_GROUPS,
+from audit_tool.framework.paths import (
     CONTROL_3_GROUPS_SMOKE,
-    DEPLOY_CONTROL_3_GROUPS,
+    CONTROL_3_GROUPS_SMOKE_NEGATIVE,
     DEPLOY_CONTROL_3_GROUPS_SMOKE,
+    DEPLOY_CONTROL_3_GROUPS_SMOKE_NEGATIVE,
 )
 
 VAULT_ENV_VARS: Tuple[str, ...] = (
@@ -71,6 +70,16 @@ def resolve_smoke_config_path() -> str:
     return str(CONTROL_3_GROUPS_SMOKE)
 
 
+def resolve_smoke_negative_config_path() -> str:
+    """Negative smoke config — ignores APP_CHECK_CONFIG (positive leftover)."""
+    override = os.environ.get("APP_CHECK_NEGATIVE_CONFIG", "").strip()
+    if override:
+        return override
+    if os.path.isfile(DEPLOY_CONTROL_3_GROUPS_SMOKE_NEGATIVE):
+        return DEPLOY_CONTROL_3_GROUPS_SMOKE_NEGATIVE
+    return str(CONTROL_3_GROUPS_SMOKE_NEGATIVE)
+
+
 def validate_auth_runtime() -> None:
     missing = [n for n in get_auth_required_env() if not os.environ.get(n)]
     if missing:
@@ -95,32 +104,3 @@ def validate_runtime() -> None:
     validate_auth_runtime()
     if not os.environ.get("APP_CHECK_CONFIG"):
         raise ValueError("Missing env: APP_CHECK_CONFIG")
-
-
-def run_control_3(config_path: str) -> int:
-    validate_runtime()
-    from audit_tool.control_3 import run
-    from audit_tool.gcp_client import GcpPolicyClient
-
-    logging.info("Control 3 starting, config=%s", config_path)
-    violations = run(config_path, GcpPolicyClient())
-    if violations:
-        for v in violations:
-            logging.error(v.message)
-        return 1
-    logging.info("Control 3 passed")
-    return 0
-
-
-def run_control_1() -> int:
-    validate_auth_runtime()
-    from audit_tool.control_1 import run
-
-    logging.info("Control 1 starting")
-    findings = run()
-    if findings:
-        for msg in findings:
-            logging.error(msg)
-        return 1
-    logging.info("Control 1 passed")
-    return 0

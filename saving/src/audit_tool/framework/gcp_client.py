@@ -97,7 +97,7 @@ def load_gcp_credentials():
         credentials, _ = google_auth_default(scopes=GCP_SCOPES)
         return _maybe_impersonate(credentials)
     if creds_source == "VAULT":
-        from audit_tool.runtime import VAULT_ENV_VARS
+        from audit_tool.framework.runtime import VAULT_ENV_VARS
         from vaultcreds import VaultCreds
 
         missing = [key for key in VAULT_ENV_VARS if not os.environ.get(key)]
@@ -124,9 +124,8 @@ class GcpPolicyClient:
     """Load group IAM allow policies and check membership group bindings."""
 
     def __init__(self, load_policies: bool = True) -> None:
-        # The environment is testenv, but IAM/Cloud Identity group emails use
-        # the example.com domain. Keep this separate from GOOGLE_DOMAIN_NAME,
-        # which is also used by Control 1 to classify external principals.
+        # Group emails may use a different domain than GOOGLE_DOMAIN_NAME.
+        # Set GOOGLE_GROUP_DOMAIN_NAME for Cloud Identity / IAM group lookups.
         self.group_domain = os.environ["GOOGLE_GROUP_DOMAIN_NAME"].lower()
         self.credentials = load_gcp_credentials()
         self._asset = asset_v1.AssetServiceClient(credentials=self.credentials)
