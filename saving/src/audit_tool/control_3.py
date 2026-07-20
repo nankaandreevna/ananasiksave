@@ -1,5 +1,6 @@
 """Control 3 — membership group must not have IAM bindings (only activation_group may)."""
 
+import logging
 from dataclasses import dataclass
 from typing import List
 
@@ -19,15 +20,52 @@ def run(config_path: str, gcp: GcpPolicyClient) -> List[Violation]:
     violations: List[Violation] = []
 
     for membership, activation_group in pairs:
-        if gcp.is_group_in_any_policy(membership):
+        if not gcp.group_exists(membership):
+            message = (
+                f"Group {membership} does not exist in Cloud Identity "
+                f"(looked up as {gcp.group_email(membership)})"
+            )
+            logging.info(message)
             violations.append(
                 Violation(
                     membership_group=membership,
                     activation_group=activation_group,
-                    message=(
-                        f"C3-001 - {membership} has iam bindings; "
-                        f"bindings must be on {activation_group} only"
-                    ),
+                    message=message,
                 )
+            )
+            continue
+
+        if not gcp.group_exists(activation_group):
+            message = (
+                f"Activation group {activation_group} does not exist in Cloud Identity "
+                f"(looked up as {gcp.group_email(activation_group)})"
+            )
+            logging.info(message)
+            violations.append(
+                Violation(
+                    membership_group=membership,
+                    activation_group=activation_group,
+                    message=message,
+                )
+            )
+            continue
+
+        if gcp.is_group_in_any_policy(membership):
+            message = (
+                f"C3-001 - Group {membership} has iam bindings; "
+                f"bindings must be on {activation_group} only"
+            )
+            logging.info(message)
+            violations.append(
+                Violation(
+                    membership_group=membership,
+                    activation_group=activation_group,
+                    message=message,
+                )
+            )
+        else:
+            logging.info(
+                "membership group %s doesn't have any bindings - SUCCESS",
+                membership,
             )
     return violations

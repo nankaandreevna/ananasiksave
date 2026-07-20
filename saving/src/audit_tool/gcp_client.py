@@ -14,7 +14,10 @@ from google.oauth2 import service_account
 
 logger = logging.getLogger(__name__)
 
-GCP_SCOPES = ["https://www.googleapis.com/auth/cloud-platform"]
+GCP_SCOPES = [
+    "https://www.googleapis.com/auth/cloud-platform",
+    "https://www.googleapis.com/auth/admin.directory.group.readonly",
+]
 
 
 def _maybe_impersonate(source_credentials):
@@ -116,9 +119,12 @@ class GcpPolicyClient:
     """Load group IAM allow policies and check membership group bindings."""
 
     def __init__(self, load_policies: bool = True) -> None:
-        self.domain = os.environ["GOOGLE_DOMAIN_NAME"].lower()
+        # Group emails may use a different domain than GOOGLE_DOMAIN_NAME.
+        # Set GOOGLE_GROUP_DOMAIN_NAME for Cloud Identity / IAM group lookups.
+        self.group_domain = os.environ["GOOGLE_GROUP_DOMAIN_NAME"].lower()
         self.credentials = load_gcp_credentials()
         self._asset = asset_v1.AssetServiceClient(credentials=self.credentials)
+        self._directory = None
         self._policies: List[dict] = []
         if not load_policies:
             return
@@ -129,6 +135,45 @@ class GcpPolicyClient:
         logger.info("Loading IAM allow policies from %s", scope)
         self._policies = self._search_group_policies(scope)
         logger.info("Loaded %d group IAM policies", len(self._policies))
+
+    def _group_email(self, group_name: str) -> str:
+        name = group_name.strip().lower()
+        if "@" in name:
+            return name
+        return f"{name}@{self.group_domain}"
+
+    def group_email(self, group_name: str) -> str:
+        """Resolve group name using GOOGLE_GROUP_DOMAIN_NAME when needed."""
+        return self._group_email(group_name)
+
+    def _directory_service(self):
+        if self._directory is None:
+            from googleapiclient.discovery import build
+
+            self._directory = build(
+                "admin",
+                "directory_v1",
+                credentials=self.credentials,
+                cache_discovery=False,
+            )
+        return self._directory
+
+    def group_exists(self, group_name: str) -> bool:
+        """True if group exists in Cloud Identity / Workspace Directory."""
+        from googleapiclient.errors import HttpError
+
+        email = self._group_email(group_name)
+        logger.info("Checking Cloud Identity for group %s", email)
+        try:
+            self._directory_service().groups().get(groupKey=email).execute()
+            logger.info("Group %s exists in Cloud Identity", email)
+            return True
+        except HttpError as exc:
+            if exc.resp is not None and exc.resp.status == 404:
+                logger.info("Group %s does not exist in Cloud Identity", email)
+                return False
+            logger.warning("Cloud Identity lookup failed for %s: %s", email, exc)
+            raise
 
     def _search_group_policies(self, scope: str) -> List[dict]:
         results: List[dict] = []
@@ -151,8 +196,9 @@ class GcpPolicyClient:
         return results
 
     def is_group_in_any_policy(self, group_name: str) -> bool:
-        group_email = f"{group_name.lower()}@{self.domain}"
+        group_email = self._group_email(group_name)
         member = f"group:{group_email}"
+        logger.info("Checking IAM bindings for %s", member)
         for policy in self._policies:
             bindings = policy.get("policy", {}).get("bindings", [])
             for binding in bindings:

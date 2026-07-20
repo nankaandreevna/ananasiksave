@@ -72,6 +72,7 @@ def resolve_audit_scope() -> str:
 def run() -> List[str]:
     scope = resolve_audit_scope()
     org_domain = os.environ["GOOGLE_DOMAIN_NAME"].lower()
+    group_domain = os.environ.get("GOOGLE_GROUP_DOMAIN_NAME", org_domain).lower()
     privileged_roles = get_privileged_roles()
 
     logger.info("Control 1 scope=%s privileged_roles=%d", scope, len(privileged_roles))
@@ -102,7 +103,10 @@ def run() -> List[str]:
                 is_external = False
                 if member_type in ("user", "serviceAccount", "group") and "@" in identifier:
                     domain = identifier.split("@")[-1].lower()
-                    if domain != org_domain:
+                    expected_domain = (
+                        group_domain if member_type == "group" else org_domain
+                    )
+                    if domain != expected_domain:
                         is_external = True
 
                 if role in privileged_roles:
