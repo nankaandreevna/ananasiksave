@@ -1,6 +1,7 @@
 """Negative Control 3 — expect C3-001 violations on configured pairs.
 
-Uses controls_data/control_3_groups_negative.yaml by default.
+Uses APP_CHECK_NEGATIVE_CONFIG or controls_data/control_3_groups_negative.yaml.
+Does not read or overwrite APP_CHECK_CONFIG (positive).
 Test passes when Control 3 finds violations; fails if the groups are clean.
 """
 
@@ -15,7 +16,6 @@ NAME = "control_3_negative"
 
 def run() -> int:
     config_path = resolve_control_3_negative_config_path()
-    os.environ["APP_CHECK_CONFIG"] = config_path
     if not os.path.isfile(config_path):
         raise FileNotFoundError(
             f"Negative Control 3 config not found: {config_path}. "

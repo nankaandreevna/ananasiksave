@@ -10,8 +10,7 @@ from typing import List
 
 from audit_tool.framework.config import get_group_pairs, load_config
 from audit_tool.framework.gcp_client import GcpPolicyClient
-from audit_tool.framework.paths import DEPLOY_CONTROL_3_GROUPS
-from audit_tool.framework.runtime import resolve_config_path, validate_runtime
+from audit_tool.framework.runtime import resolve_control_3_config_path, validate_runtime
 
 
 @dataclass
@@ -100,7 +99,7 @@ def evaluate(config_path: str, gcp: GcpPolicyClient) -> List[Violation]:
 
 def run_with_config(config_path: str) -> int:
     """Execute Control 3 for a config file. 0 = pass, 1 = violations."""
-    validate_runtime()
+    validate_runtime(config_path=config_path)
     logging.info("Control 3 starting, config=%s", config_path)
     violations = evaluate(config_path, GcpPolicyClient())
     if violations:
@@ -112,5 +111,5 @@ def run_with_config(config_path: str) -> int:
 
 
 def run() -> int:
-    """CLI entry for python main.py control_3."""
-    return run_with_config(resolve_config_path(DEPLOY_CONTROL_3_GROUPS))
+    """CLI entry for python main.py control_3 (positive)."""
+    return run_with_config(resolve_control_3_config_path())

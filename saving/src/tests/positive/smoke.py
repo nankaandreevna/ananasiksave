@@ -1,4 +1,7 @@
-"""Positive Control 3 smoke — expect no IAM bindings on membership groups."""
+"""Positive Control 3 smoke — expect no IAM bindings on membership groups.
+
+Uses APP_CHECK_SMOKE_CONFIG (not APP_CHECK_CONFIG).
+"""
 
 import logging
 import os
@@ -18,14 +21,12 @@ _SENSITIVE_ENV = frozenset(
 
 
 def run() -> int:
-    if not os.environ.get("APP_CHECK_CONFIG"):
-        os.environ["APP_CHECK_CONFIG"] = resolve_smoke_config_path()
-
     config_path = resolve_smoke_config_path()
     if not os.path.isfile(config_path):
         raise FileNotFoundError(
             f"Smoke config not found: {config_path}. "
-            "Create controls_data/control_3_groups_smoke.yaml or set APP_CHECK_CONFIG."
+            "Create controls_data/control_3_groups_smoke.yaml "
+            "or set APP_CHECK_SMOKE_CONFIG."
         )
 
     logging.info("=== Smoke test start (positive) ===")
@@ -40,6 +41,7 @@ def run() -> int:
             logging.info("  %s: set", name)
         else:
             logging.info("  %s: %s", name, os.environ.get(name))
+    logging.info("  config (APP_CHECK_SMOKE_CONFIG): %s", config_path)
     if os.environ.get("GCP_IMPERSONATE_SERVICE_ACCOUNT"):
         logging.info(
             "  GCP_IMPERSONATE_SERVICE_ACCOUNT: %s",
@@ -50,7 +52,7 @@ def run() -> int:
             "  GOOGLE_CLOUD_QUOTA_PROJECT: %s",
             os.environ["GOOGLE_CLOUD_QUOTA_PROJECT"],
         )
-    validate_runtime()
+    validate_runtime(config_path=config_path)
     logging.info("Smoke step 1/3 ok")
 
     logging.info("Smoke step 2/3: config %s", config_path)

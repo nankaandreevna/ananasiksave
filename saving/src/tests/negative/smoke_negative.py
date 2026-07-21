@@ -1,6 +1,7 @@
 """Negative Control 3 smoke — expect C3-001 violations (membership has iam bindings).
 
-Uses controls_data/control_3_groups_smoke_negative.yaml by default.
+Uses APP_CHECK_SMOKE_NEGATIVE_CONFIG or control_3_groups_smoke_negative.yaml.
+Does not read or overwrite APP_CHECK_CONFIG (positive).
 Test passes when Control 3 finds violations; fails if the groups are clean.
 """
 
@@ -10,7 +11,7 @@ import os
 from audit_tool.framework.config import get_group_pairs, load_config
 from audit_tool.framework.gcp_client import load_gcp_credentials, resolve_credentials_identity
 from audit_tool.framework.runtime import (
-    get_required_env,
+    get_auth_required_env,
     resolve_smoke_negative_config_path,
     validate_runtime,
 )
@@ -25,7 +26,6 @@ _SENSITIVE_ENV = frozenset(
 
 def run() -> int:
     config_path = resolve_smoke_negative_config_path()
-    os.environ["APP_CHECK_CONFIG"] = config_path
     if not os.path.isfile(config_path):
         raise FileNotFoundError(
             f"Negative smoke config not found: {config_path}. "
@@ -36,7 +36,7 @@ def run() -> int:
     logging.info("=== Smoke negative test start ===")
 
     logging.info("Smoke negative step 1/3: runtime environment")
-    required = get_required_env()
+    required = get_auth_required_env() + ("GOOGLE_GROUP_DOMAIN_NAME",)
     missing = [name for name in required if not os.environ.get(name)]
     if missing:
         raise ValueError(f"Missing env: {', '.join(missing)}")
@@ -45,7 +45,8 @@ def run() -> int:
             logging.info("  %s: set", name)
         else:
             logging.info("  %s: %s", name, os.environ.get(name))
-    validate_runtime()
+    logging.info("  config: %s", config_path)
+    validate_runtime(config_path=config_path)
     logging.info("Smoke negative step 1/3 ok")
 
     logging.info("Smoke negative step 2/3: config %s", config_path)

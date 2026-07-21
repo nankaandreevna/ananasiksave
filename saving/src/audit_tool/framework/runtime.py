@@ -5,9 +5,11 @@ from pathlib import Path
 from typing import Tuple
 
 from audit_tool.framework.paths import (
+    CONTROL_3_GROUPS,
     CONTROL_3_GROUPS_NEGATIVE,
     CONTROL_3_GROUPS_SMOKE,
     CONTROL_3_GROUPS_SMOKE_NEGATIVE,
+    DEPLOY_CONTROL_3_GROUPS,
     DEPLOY_CONTROL_3_GROUPS_NEGATIVE,
     DEPLOY_CONTROL_3_GROUPS_SMOKE,
     DEPLOY_CONTROL_3_GROUPS_SMOKE_NEGATIVE,
@@ -32,14 +34,20 @@ AUTH_REQUIRED_ENV: Tuple[str, ...] = (
     "GOOGLE_ORG_ID",
 )
 
+# Auth + group domain. Suite-specific YAML paths are separate env vars (below).
 BASE_REQUIRED_ENV: Tuple[str, ...] = AUTH_REQUIRED_ENV + (
     "GOOGLE_GROUP_DOMAIN_NAME",
-    "APP_CHECK_CONFIG",
 )
 
 CREDENTIALS_SOURCES = ("LOCAL", "VAULT", "ADC")
 
 REQUIRED_ENV = BASE_REQUIRED_ENV + VAULT_ENV_VARS
+
+# Control 3 config env vars (one per CLI suite)
+ENV_CONTROL_3 = "APP_CHECK_CONFIG"
+ENV_CONTROL_3_NEGATIVE = "APP_CHECK_NEGATIVE_CONFIG"
+ENV_SMOKE = "APP_CHECK_SMOKE_CONFIG"
+ENV_SMOKE_NEGATIVE = "APP_CHECK_SMOKE_NEGATIVE_CONFIG"
 
 
 def get_auth_required_env() -> Tuple[str, ...]:
@@ -52,6 +60,7 @@ def get_auth_required_env() -> Tuple[str, ...]:
 
 
 def get_required_env() -> Tuple[str, ...]:
+    """Auth + GOOGLE_GROUP_DOMAIN_NAME (no suite-specific config env)."""
     source = os.environ.get("SOURCE_CREDENTIALS_GCP", "").upper()
     if source == "LOCAL":
         return BASE_REQUIRED_ENV + LOCAL_GCP_ENV_VARS
@@ -61,35 +70,48 @@ def get_required_env() -> Tuple[str, ...]:
 
 
 def resolve_config_path(default_path: str) -> str:
-    return os.environ.get("APP_CHECK_CONFIG", default_path)
+    """Legacy helper — positive Control 3 override only."""
+    return os.environ.get(ENV_CONTROL_3, default_path)
+
+
+def resolve_control_3_config_path() -> str:
+    """Positive Control 3 — APP_CHECK_CONFIG."""
+    override = os.environ.get(ENV_CONTROL_3, "").strip()
+    if override:
+        return override
+    if os.path.isfile(DEPLOY_CONTROL_3_GROUPS):
+        return DEPLOY_CONTROL_3_GROUPS
+    return str(CONTROL_3_GROUPS)
+
+
+def resolve_control_3_negative_config_path() -> str:
+    """Negative Control 3 — APP_CHECK_NEGATIVE_CONFIG."""
+    override = os.environ.get(ENV_CONTROL_3_NEGATIVE, "").strip()
+    if override:
+        return override
+    if os.path.isfile(DEPLOY_CONTROL_3_GROUPS_NEGATIVE):
+        return DEPLOY_CONTROL_3_GROUPS_NEGATIVE
+    return str(CONTROL_3_GROUPS_NEGATIVE)
 
 
 def resolve_smoke_config_path() -> str:
-    if os.environ.get("APP_CHECK_CONFIG"):
-        return os.environ["APP_CHECK_CONFIG"]
+    """Positive smoke — APP_CHECK_SMOKE_CONFIG."""
+    override = os.environ.get(ENV_SMOKE, "").strip()
+    if override:
+        return override
     if os.path.isfile(DEPLOY_CONTROL_3_GROUPS_SMOKE):
         return DEPLOY_CONTROL_3_GROUPS_SMOKE
     return str(CONTROL_3_GROUPS_SMOKE)
 
 
 def resolve_smoke_negative_config_path() -> str:
-    """Negative smoke config — ignores APP_CHECK_CONFIG (positive leftover)."""
-    override = os.environ.get("APP_CHECK_SMOKE_NEGATIVE_CONFIG", "").strip()
+    """Negative smoke — APP_CHECK_SMOKE_NEGATIVE_CONFIG."""
+    override = os.environ.get(ENV_SMOKE_NEGATIVE, "").strip()
     if override:
         return override
     if os.path.isfile(DEPLOY_CONTROL_3_GROUPS_SMOKE_NEGATIVE):
         return DEPLOY_CONTROL_3_GROUPS_SMOKE_NEGATIVE
     return str(CONTROL_3_GROUPS_SMOKE_NEGATIVE)
-
-
-def resolve_control_3_negative_config_path() -> str:
-    """Negative Control 3 config — production-style known-bad pairs."""
-    override = os.environ.get("APP_CHECK_NEGATIVE_CONFIG", "").strip()
-    if override:
-        return override
-    if os.path.isfile(DEPLOY_CONTROL_3_GROUPS_NEGATIVE):
-        return DEPLOY_CONTROL_3_GROUPS_NEGATIVE
-    return str(CONTROL_3_GROUPS_NEGATIVE)
 
 
 def validate_auth_runtime() -> None:
@@ -112,7 +134,17 @@ def validate_auth_runtime() -> None:
             raise FileNotFoundError(f"GCP service account key not found: {key}")
 
 
-def validate_runtime() -> None:
+def validate_runtime(config_path: str = "") -> None:
+    """Validate auth + group domain. Prefer passing the resolved suite config_path."""
     validate_auth_runtime()
-    if not os.environ.get("APP_CHECK_CONFIG"):
-        raise ValueError("Missing env: APP_CHECK_CONFIG")
+    if not os.environ.get("GOOGLE_GROUP_DOMAIN_NAME"):
+        raise ValueError("Missing env: GOOGLE_GROUP_DOMAIN_NAME")
+    if config_path:
+        if not os.path.isfile(config_path):
+            raise FileNotFoundError(f"Config not found: {config_path}")
+        return
+    raise ValueError(
+        "Control 3 config path required. Set the suite env var "
+        f"({ENV_CONTROL_3} / {ENV_CONTROL_3_NEGATIVE} / "
+        f"{ENV_SMOKE} / {ENV_SMOKE_NEGATIVE}) or use bundled defaults."
+    )
