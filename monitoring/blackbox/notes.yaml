@@ -1,0 +1,87 @@
+### BLACKBOX INSTALATION:
+# * Will be installed in monitroing ns
+# * Path to values might be different
+# * Can be installed without values.yaml -> but then it is hard to change valid_status_codes, so better to pass with values.
+# * If values not specified and ingress already installed, blackbox endpoint will be auto created.
+
+helm upgrade --install  blackbox prometheus-community/prometheus-blackbox-exporter  -n monitoring -f ./monitoring/blackbox/blackbox_values.yaml --create-namespace
+if [ $? -ne 0 ];
+then
+  echo "Error installing blackbox-prometheus-exporters"
+  exit 1;
+fi
+
+
+
+### NOTES TO KEEP:
+
+# Prometheus will find module based on name. In this example we use modules [http_2xx:]
+
+# All BlackBox configuration should be added under     additionalScrapeConfigs: [] in PrometheusStack.yaml
+
+    additionalScrapeConfigs: 
+      - job_name: 'blackbox-uptime-check-endpoint'
+        scrape_timeout: 15s
+        scrape_interval: 15s
+        metrics_path: /probe
+        tls_config:
+          insecure_skip_verify: true 
+        params:
+          module: [http_2xx]  # Look for a HTTP 200 response.
+        static_configs:
+         - targets: 
+           - XXX.com/__health
+           - XXX.com
+           - XXX.com
+           
+           
+        relabel_configs:
+
+        # 1. Set ingress address protocol to https, so we can make sure certificates are valid while probing endpoints
+        - source_labels: [__address__]
+          regex: (.*)
+          action: replace
+          replacement: https://$1
+          target_label: __param_target
+
+        # 2. Save address in an instance label since __param_target is going to be dropped
+        - source_labels: [__param_target]
+          target_label: instance
+
+        # 3. Replace address with an internal blackbox service so scraper is always pointed at blackbox-exporter
+        - target_label: __address__
+          replacement: blackbox-prometheus-blackbox-exporter:9115
+          
+          
+### FROM SCRIPT SOME NOTES:
+# 1. Target -> will be https if in values.yaml under module section. If not specified will be http.
+        tls_config:
+          insecure_skip_verify: true
+# 2.  metrics oath for blackbox should stay as probe -> do not change. If need additional path to endpoint put it in target as line 33
+      metrics_path: /probe
+# 3. scrape_timeout should be equal scrape_interval
+# 4. Module to use come from blackbox_values.yaml. module can be changed to different one, but it need to be in blackbox_values
+       params:
+          module: [http_2xx]
+# 5. relabel_configs -> replace address with an internal blackbox service -> replacement 
+  This is actual service in your k8s cluster. Naming convention should be correct. Check name and port run 'k get svc -n monitoring'  
+
+           
+           
+### ADDITIONAL DETAILS:
+# 1. Prometheus UI Status -> Target -> Will be always UP
+# 2. To check and troubleshoout actual Endpoint -> navigate to BlackBox UI.
+# 3. To Create Alerts for Endpoints which using BlackBox use expression: probe_success ==  0
+#      Example: 
+      - alert: XXX-DEV-Application-Endpoint-Status
+        annotations:
+          description: “Application endpoint is down. Please investigate”
+          summary: “Application endpoint (instance {{ $labels.instance }}) is down. Please investigate)”
+        expr: probe_success{instance=~"https://specific_endpoint_to_check.*"} ==  0 # to check specific endpoint (when alerts devided by app teams)
+     #  expr: probe_success == 0 # to check ALL endpoints which are under BlckBox monitoring 
+        for: 5m
+        labels:
+          severity: critical
+          group: group_to_send_alerts 
+
+

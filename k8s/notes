@@ -1,0 +1,8 @@
+# note-commands
+Cheet-sheet commands will be displayed under each related topic
+
+1. Remove resource (ex: configmap) from list which starting the same 
+	kubectl get cm -n monitoring --no-headers=true | awk '/kube-dashboard/{print $1}' | xargs  kubectl delete -n monitoring cm
+	
+2. Find all deprecated versions (before upgrade)
+	kubectl get --raw /metrics | prom2json | jq '.[] | select(.name=="apiserver_requested_deprecated_apis").metrics[].labels'
