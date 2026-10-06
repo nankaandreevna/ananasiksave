@@ -1,0 +1,19 @@
+# Control 1 expected exceptions.
+#
+# A restricted permission on an *_RO group is not a finding when the IAM
+# resource is one of these projects and the permission is listed here.
+# Role-name hits (for example pattern "admin") are not findings only for
+# the roles listed on that same project. Anything else still fails C1-001.
+#
+# Override path: APP_CHECK_1_ALLOWLIST
+
+whitelisted_entries:
+  - project: prj-example-billing-01
+    roles:
+      - projects/prj-example-billing-01/roles/org.prj_example_billing_01.billing_admin.role_a
+      - projects/prj-example-billing-01/roles/org.prj_example_billing_01.billing_admin.role_b
+    permissions:
+      - bigquery.jobs.create
+      - bigquery.models.export
+      - bigquery.tables.createSnapshot
+      - bigquery.tables.export

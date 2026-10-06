@@ -35,6 +35,7 @@ from audit_tool.framework.gcp_client import (
     resolve_credentials_identity,
 )
 from audit_tool.framework.paths import (
+    CONTROL_1_ALLOWLIST,
     CONTROL_1_PERMISSIONS,
     CONTROL_1_RO_POLICY,
 )
@@ -92,6 +93,13 @@ class RoPolicy:
 
 
 @dataclass
+class AllowEntry:
+    project: str
+    permissions: Set[str] = field(default_factory=set)
+    roles: Set[str] = field(default_factory=set)
+
+
+@dataclass
 class Violation:
     group_email: str
     role: str
@@ -123,6 +131,80 @@ def _permissions_db_path() -> Path:
     if override:
         return Path(override)
     return CONTROL_1_PERMISSIONS
+
+
+def _allowlist_path() -> Path:
+    override = os.environ.get("APP_CHECK_1_ALLOWLIST", "").strip()
+    if override:
+        return Path(override)
+    return CONTROL_1_ALLOWLIST
+
+
+def load_allowlist() -> List[AllowEntry]:
+    """Expected project + permission (and role-name) exceptions. Missing file = none."""
+    path = _allowlist_path()
+    if not path.is_file():
+        logger.info("Control 1 allowlist not found (%s); no exceptions", path)
+        return []
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    entries: List[AllowEntry] = []
+    for row in data.get("whitelisted_entries") or []:
+        project = str(row.get("project") or "").strip()
+        if not project:
+            continue
+        entries.append(
+            AllowEntry(
+                project=project.lower(),
+                permissions={
+                    str(p).strip().lower()
+                    for p in (row.get("permissions") or [])
+                    if str(p).strip()
+                },
+                roles={
+                    str(r).strip().lower()
+                    for r in (row.get("roles") or [])
+                    if str(r).strip()
+                },
+            )
+        )
+    logger.info("Loaded %d Control 1 allowlist entr(ies) from %s", len(entries), path.name)
+    return entries
+
+
+def _project_id(resource: str) -> str:
+    text = (resource or "").strip()
+    marker = "/projects/"
+    if marker in text:
+        return text.split(marker, 1)[1].split("/", 1)[0]
+    if text.lower().startswith("projects/"):
+        return text.split("/", 1)[1].split("/", 1)[0]
+    return text
+
+
+def _allow_entry(resource: str, allowlist: List[AllowEntry]) -> Optional[AllowEntry]:
+    project = _project_id(resource).lower()
+    for entry in allowlist:
+        if entry.project == project:
+            return entry
+    return None
+
+
+def permission_is_allowlisted(
+    resource: str, permission: str, allowlist: List[AllowEntry]
+) -> bool:
+    entry = _allow_entry(resource, allowlist)
+    if not entry:
+        return False
+    return permission.strip().lower() in entry.permissions
+
+
+def role_is_allowlisted(resource: str, role: str, allowlist: List[AllowEntry]) -> bool:
+    entry = _allow_entry(resource, allowlist)
+    if not entry or not entry.roles:
+        return False
+    role_l = role.strip().lower()
+    leaf = role_l.rsplit("/", 1)[-1]
+    return role_l in entry.roles or leaf in entry.roles
 
 
 def load_ro_policy() -> RoPolicy:
@@ -361,6 +443,7 @@ def collect_ro_group_bindings(
 def evaluate(credentials=None) -> List[Violation]:
     policy = load_ro_policy()
     metadata_map = load_restricted_permission_map(policy)
+    allowlist = load_allowlist()
     scope = resolve_audit_scope()
     credentials = credentials or load_gcp_credentials()
     iam = _iam_service(credentials)
@@ -388,28 +471,39 @@ def evaluate(credentials=None) -> List[Violation]:
     role_cache: Dict[str, List[str]] = {}
     violations: List[Violation] = []
     seen: Set[Tuple[str, str, str, str]] = set()
+    allowlisted = 0
 
     for member, role, resource in bindings:
         name_reason = role_name_is_restricted(role, policy)
         if name_reason:
-            key = (member, role, resource, f"role:{name_reason}")
-            if key not in seen:
-                seen.add(key)
-                message = (
-                    f"C1-001 - RO group {member} has restricted role {role} "
-                    f"on {resource} ({name_reason})"
+            if role_is_allowlisted(resource, role, allowlist):
+                allowlisted += 1
+                logger.info(
+                    "Allowlisted role %s on %s for %s (%s)",
+                    role,
+                    resource,
+                    member,
+                    name_reason,
                 )
-                logger.info(message)
-                violations.append(
-                    Violation(
-                        group_email=member,
-                        role=role,
-                        resource=resource,
-                        permission="",
-                        reason=name_reason,
-                        message=message,
+            else:
+                key = (member, role, resource, f"role:{name_reason}")
+                if key not in seen:
+                    seen.add(key)
+                    message = (
+                        f"C1-001 - RO group {member} has restricted role {role} "
+                        f"on {resource} ({name_reason})"
                     )
-                )
+                    logger.info(message)
+                    violations.append(
+                        Violation(
+                            group_email=member,
+                            role=role,
+                            resource=resource,
+                            permission="",
+                            reason=name_reason,
+                            message=message,
+                        )
+                    )
             # Still expand to list every bad permission (detailed audit evidence)
 
         if role not in role_cache:
@@ -418,6 +512,17 @@ def evaluate(credentials=None) -> List[Violation]:
         for permission in role_cache[role]:
             perm_reason = permission_is_restricted(permission, policy, metadata_map)
             if not perm_reason:
+                continue
+            if permission_is_allowlisted(resource, permission, allowlist):
+                allowlisted += 1
+                logger.info(
+                    "Allowlisted permission %s via role %s on %s for %s [%s]",
+                    permission,
+                    role,
+                    resource,
+                    member,
+                    perm_reason,
+                )
                 continue
             key = (member, role, resource, permission)
             if key in seen:
@@ -440,9 +545,10 @@ def evaluate(credentials=None) -> List[Violation]:
             )
 
     logger.info(
-        "Control 1 summary: ro_bindings=%d unique_roles=%d violations=%d",
+        "Control 1 summary: ro_bindings=%d unique_roles=%d allowlisted=%d violations=%d",
         len(bindings),
         len(role_cache),
+        allowlisted,
         len(violations),
     )
     return violations
