@@ -471,13 +471,14 @@ def evaluate(credentials=None) -> List[Violation]:
     role_cache: Dict[str, List[str]] = {}
     violations: List[Violation] = []
     seen: Set[Tuple[str, str, str, str]] = set()
-    allowlisted = 0
+    allowlisted_projects: Set[str] = set()
+    allowlisted_permissions: Set[str] = set()
 
     for member, role, resource in bindings:
         name_reason = role_name_is_restricted(role, policy)
         if name_reason:
             if role_is_allowlisted(resource, role, allowlist):
-                allowlisted += 1
+                allowlisted_projects.add(_project_id(resource))
                 logger.info(
                     "Allowlisted role %s on %s for %s (%s)",
                     role,
@@ -514,7 +515,8 @@ def evaluate(credentials=None) -> List[Violation]:
             if not perm_reason:
                 continue
             if permission_is_allowlisted(resource, permission, allowlist):
-                allowlisted += 1
+                allowlisted_projects.add(_project_id(resource))
+                allowlisted_permissions.add(permission)
                 logger.info(
                     "Allowlisted permission %s via role %s on %s for %s [%s]",
                     permission,
@@ -544,13 +546,34 @@ def evaluate(credentials=None) -> List[Violation]:
                 )
             )
 
-    logger.info(
-        "Control 1 summary: ro_bindings=%d unique_roles=%d allowlisted=%d violations=%d",
-        len(bindings),
-        len(role_cache),
-        allowlisted,
-        len(violations),
-    )
+    if violations and allowlisted_projects:
+        logger.error(
+            "Control 1 failed with %d finding(s). Allowlisted project %s was excluded. "
+            "Review the whitelist at %s.",
+            len(violations),
+            ", ".join(sorted(allowlisted_projects)),
+            _allowlist_path(),
+        )
+    elif violations:
+        logger.error("Control 1 failed with %d finding(s).", len(violations))
+    elif allowlisted_projects:
+        project_word = "Project" if len(allowlisted_projects) == 1 else "Projects"
+        project_verb = "was" if len(allowlisted_projects) == 1 else "were"
+        permission_word = (
+            "permission" if len(allowlisted_permissions) == 1 else "permissions"
+        )
+        logger.info(
+            "Control 1 passed. %s %s %s allowlisted along with %s %s. "
+            "Review the whitelist at %s.",
+            project_word,
+            ", ".join(sorted(allowlisted_projects)),
+            project_verb,
+            permission_word,
+            ", ".join(sorted(allowlisted_permissions)),
+            _allowlist_path(),
+        )
+    else:
+        logger.info("Control 1 passed. No restricted permissions were found on RO groups.")
     return violations
 
 
@@ -565,7 +588,5 @@ def run() -> int:
     if violations:
         for v in violations:
             logger.error(v.message)
-        logger.error("Control 1 FAILED with %d finding(s)", len(violations))
         return 1
-    logger.info("Control 1 passed — no non-RO permissions on RO groups")
     return 0
