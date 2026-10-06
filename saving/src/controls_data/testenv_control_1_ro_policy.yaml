@@ -1,0 +1,234 @@
+# Control 1 — Read-Only Group Permission Validation (Org / testenv audit policy)
+#
+# docs: groups whose local name ends with readonly_suffix (default `_RO`)
+# must not receive write, admin, secrets-access, crypto-use, impersonation,
+# or IAM-policy-change capabilities.
+#
+# Finding code: C1-001
+#
+# Evaluation order (see audit_controls/control_1.py):
+#   1) Role name patterns (owner / editor / *admin* / …)
+#   2) Explicit always_restricted_permissions (below)
+#   3) Metadata DB types in control_1_permissions.json
+#   4) Restricted permission substrings
+#   5) Restricted verbs on the permission last segment
+#
+# Override paths: APP_CHECK_1_POLICY, APP_CHECK_1_PERMISSIONS
+# Override suffix / verbs: READONLY_SUFFIX, RESTRICTED_VERBS
+
+readonly_suffix: "_RO"
+
+# Permission types / reasons from control_1_permissions.json that always fail.
+# ADMIN_WRITE / DATA_WRITE = mutating. SENSITIVE_DATA_READ = secret/crypto/exfil-style reads.
+metadata_restricted_types:
+  - ADMIN_WRITE
+  - DATA_WRITE
+  - SENSITIVE_DATA_READ
+
+# Exact permissions that always fail (bank denylist — even if missing from metadata JSON).
+always_restricted_permissions:
+  # Impersonation / token minting
+  - iam.serviceAccounts.actAs
+  - iam.serviceAccounts.getAccessToken
+  - iam.serviceAccounts.getOpenIdToken
+  - iam.serviceAccounts.implicitDelegation
+  - iam.serviceAccounts.signBlob
+  - iam.serviceAccounts.signJwt
+  - iam.serviceAccountKeys.create
+  - iam.serviceAccountKeys.delete
+  # Org / project IAM
+  - resourcemanager.organizations.setIamPolicy
+  - resourcemanager.folders.setIamPolicy
+  - resourcemanager.projects.setIamPolicy
+  - orgpolicy.policy.set
+  # Secrets
+  - secretmanager.versions.access
+  - secretmanager.versions.add
+  - secretmanager.versions.destroy
+  - secretmanager.secrets.setIamPolicy
+  # KMS use / destroy
+  - cloudkms.cryptoKeyVersions.useToDecrypt
+  - cloudkms.cryptoKeyVersions.useToEncrypt
+  - cloudkms.cryptoKeyVersions.useToSign
+  - cloudkms.cryptoKeyVersions.destroy
+  - cloudkms.cryptoKeys.setIamPolicy
+  # Object / data plane writes
+  - storage.objects.create
+  - storage.objects.delete
+  - storage.objects.update
+  - storage.buckets.setIamPolicy
+  - storage.hmacKeys.create
+  - bigquery.tables.create
+  - bigquery.tables.delete
+  - bigquery.tables.updateData
+  - bigquery.datasets.setIamPolicy
+  # Compute / identity binding
+  - compute.instances.setMetadata
+  - compute.instances.setServiceAccount
+  - compute.instances.setIamPolicy
+  - container.clusters.update
+  - container.pods.exec
+  - run.services.setIamPolicy
+  # Sensitive log access
+  - logging.privateLogEntries.list
+  - logging.views.access
+
+# Last-segment verbs on permissions (service.resource.VERB)
+restricted_verbs:
+  - create
+  - update
+  - delete
+  - modify
+  - add
+  - remove
+  - set
+  - patch
+  - insert
+  - destroy
+  - undelete
+  - purge
+  - cancel
+  - attach
+  - detach
+  - replace
+  - write
+  - mutate
+  - truncate
+  - drop
+  - alter
+  - grant
+  - revoke
+  - disable
+  - enable
+  - start
+  - stop
+  - restart
+  - reset
+  - resize
+  - migrate
+  - clone
+  - fork
+  - import
+  - export
+  - upload
+  - download
+  - copy
+  - move
+  - rename
+  - bind
+  - unbind
+  - escalate
+  - impersonate
+  - actAs
+  - access
+  - decrypt
+  - encrypt
+  - wrap
+  - unwrap
+  - sign
+  - signBlob
+  - signJwt
+  - generate
+  - rotate
+  - useToDecrypt
+  - useToEncrypt
+  - useToSign
+  - useToVerify
+  - setIamPolicy
+  - setOrgPolicy
+  - setIamPermissions
+  - updateTag
+  - createTag
+  - publish
+  - exec
+  - attachDisk
+  - setMetadata
+  - setServiceAccount
+  - setIamPolicy
+  - updateData
+
+# Substrings anywhere in the permission string (case-insensitive)
+restricted_permission_substrings:
+  - setIamPolicy
+  - setOrgPolicy
+  - actAs
+  - impersonat
+  - secretmanager.versions.access
+  - .access
+  - useToDecrypt
+  - useToEncrypt
+  - useToSign
+  - signBlob
+  - signJwt
+  - generateAccessToken
+  - generateIdToken
+  - getOpenIdToken
+  - getAccessToken
+  - privateLogEntries
+  - serviceAccounts.sign
+  - cryptoKeyVersions.use
+  - cloudkms.cryptoKeyVersions.destroy
+  - iam.serviceAccounts.actAs
+  - iam.serviceAccountKeys.create
+  - iam.serviceAccountKeys.delete
+  - resourcemanager.projects.setIamPolicy
+  - resourcemanager.organizations.setIamPolicy
+  - resourcemanager.folders.setIamPolicy
+  - storage.objects.create
+  - storage.objects.delete
+  - storage.hmacKeys.create
+  - bigquery.tables.delete
+  - bigquery.datasets.setIamPolicy
+  - compute.instances.setMetadata
+  - compute.instances.setServiceAccount
+  - container.clusters.update
+  - container.pods.exec
+  - run.services.setIamPolicy
+  - orgpolicy.policy.set
+
+# Role name leaf / full-name patterns (fail before expand when matched)
+# Bare "admin" catches *Admin roles (securityAdmin, storage.admin, …).
+restricted_role_name_substrings:
+  - roles/owner
+  - roles/editor
+  - /admin
+  - .admin
+  - admin
+  - writer
+  - /write
+  - securityAdmin
+  - iam.securityAdmin
+  - iam.serviceAccountAdmin
+  - iam.serviceAccountKeyAdmin
+  - iam.roleAdmin
+  - resourcemanager.organizationAdmin
+  - resourcemanager.folderAdmin
+  - resourcemanager.projectIamAdmin
+  - secretmanager.admin
+  - secretmanager.secretAccessor
+  - cloudkms.admin
+  - cloudkms.cryptoKeyDecrypter
+  - cloudkms.cryptoKeyEncrypter
+  - storage.admin
+  - storage.objectAdmin
+  - storage.objectCreator
+  - bigquery.admin
+  - bigquery.dataEditor
+  - compute.admin
+  - container.admin
+  - run.admin
+  - editor
+  - owner
+
+# Safe last-segment verbs (never fail on verb alone; metadata/substring may still fail)
+safe_permission_verbs:
+  - get
+  - list
+  - read
+  - view
+  - watch
+  - search
+  - check
+  - exists
+  - getIamPolicy
+  - testIamPermissions
