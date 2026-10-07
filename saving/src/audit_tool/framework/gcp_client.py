@@ -304,13 +304,10 @@ class GcpPolicyClient:
             if not parent:
                 raise RuntimeError(f"Cloud Identity lookup returned no name for {email}")
 
+            ci = self._cloudidentity_service()
             members: List[dict] = []
-            request = (
-                self._cloudidentity_service()
-                .groups()
-                .memberships()
-                .list(parent=parent, view="FULL")
-            )
+            # view=FULL is required — BASIC omits createTime.
+            request = ci.groups().memberships().list(parent=parent, view="FULL")
             while request is not None:
                 response = request.execute()
                 for item in response.get("memberships", []):
@@ -324,40 +321,61 @@ class GcpPolicyClient:
                     member_email = (key.get("id") or "").strip().lower()
                     if not member_email or "@" not in member_email:
                         continue
-                    expire_time = None
-                    for role in item.get("roles") or []:
-                        detail = role.get("expiryDetail") or {}
-                        if detail.get("expireTime"):
-                            expire_time = detail["expireTime"]
-                            break
-                    create_time = item.get("createTime")
-                    # BASIC responses omit createTime; FULL should include it.
-                    # If still missing, fetch the membership resource by name.
-                    if not create_time and item.get("name"):
+
+                    # Always GET the membership resource. List FULL is still
+                    # incomplete in some tenants; get returns createTime.
+                    detail = dict(item)
+                    membership_name = item.get("name")
+                    if not membership_name:
                         try:
-                            detail = (
-                                self._cloudidentity_service()
-                                .groups()
+                            looked = (
+                                ci.groups()
                                 .memberships()
-                                .get(name=item["name"])
+                                .lookup(
+                                    parent=parent,
+                                    memberKey_id=member_email,
+                                )
                                 .execute()
                             )
-                            create_time = detail.get("createTime") or create_time
-                            if not expire_time:
-                                for role in detail.get("roles") or []:
-                                    exp = (role.get("expiryDetail") or {}).get(
-                                        "expireTime"
-                                    )
-                                    if exp:
-                                        expire_time = exp
-                                        break
+                            membership_name = looked.get("name")
+                        except HttpError as lookup_exc:
+                            logger.warning(
+                                "membership lookup failed for %s in %s: %s",
+                                member_email,
+                                email,
+                                lookup_exc,
+                            )
+                    if membership_name:
+                        try:
+                            detail = (
+                                ci.groups()
+                                .memberships()
+                                .get(name=membership_name)
+                                .execute()
+                            )
                         except HttpError as get_exc:
                             logger.warning(
-                                "membership get failed for %s in %s: %s",
+                                "membership get failed for %s (%s) in %s: %s",
                                 member_email,
+                                membership_name,
                                 email,
                                 get_exc,
                             )
+
+                    create_time = detail.get("createTime") or detail.get("create_time")
+                    expire_time = None
+                    for role in detail.get("roles") or []:
+                        exp = (role.get("expiryDetail") or {}).get("expireTime")
+                        if exp:
+                            expire_time = exp
+                            break
+                    if not create_time:
+                        logger.warning(
+                            "membership %s in %s has no createTime (keys=%s)",
+                            member_email,
+                            email,
+                            sorted(detail.keys()),
+                        )
                     members.append(
                         {
                             "email": member_email,
@@ -365,11 +383,8 @@ class GcpPolicyClient:
                             "expire_time": expire_time,
                         }
                     )
-                request = (
-                    self._cloudidentity_service()
-                    .groups()
-                    .memberships()
-                    .list_next(previous_request=request, previous_response=response)
+                request = ci.groups().memberships().list_next(
+                    previous_request=request, previous_response=response
                 )
             logger.info(
                 "Found %d user memberships in %s", len(members), email

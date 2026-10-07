@@ -83,32 +83,32 @@ def _member_word(count: int) -> str:
     return "member" if count == 1 else "members"
 
 
-def _active_duration_hours(added_at: str, checked_at: str) -> Optional[float]:
-    """Hours from membership createTime to this Control 2 run."""
+def _active_duration_hours(added_at: str, as_of: Optional[datetime] = None) -> Optional[float]:
+    """Hours from membership createTime (added_at) to now."""
     try:
         added = _parse_rfc3339(added_at)
-        checked = _parse_rfc3339(checked_at)
     except (TypeError, ValueError):
         return None
-    return round((checked - added).total_seconds() / 3600.0, 2)
+    end = as_of or datetime.now(timezone.utc)
+    return round((end - added).total_seconds() / 3600.0, 2)
 
 
-def _membership_snapshot(activation: str, members: List[dict], checked_at: str) -> dict:
-    """Snapshot for realtime YAML.
+def _membership_snapshot(activation: str, members: List[dict]) -> dict:
+    """Snapshot for realtime YAML (no script-run timestamp).
 
-    ``checked_at`` = when this script ran (group-level).
     Per member: ``added_at`` = Cloud Identity createTime (joined activation group);
-    ``active_duration_hours`` = hours since added_at as of checked_at.
+    ``active_duration_hours`` = hours since added_at as of this run.
     """
     count = len(members)
+    now = datetime.now(timezone.utc)
     rows: List[dict] = []
     for member in members:
         added_at = member.get("create_time")
         row: dict = {
             "email": member.get("email"),
-            "added_at": added_at,  # when user joined the activation group
+            "added_at": added_at,
             "active_duration_hours": (
-                _active_duration_hours(added_at, checked_at) if added_at else None
+                _active_duration_hours(added_at, now) if added_at else None
             ),
         }
         if member.get("expire_time"):
@@ -117,8 +117,7 @@ def _membership_snapshot(activation: str, members: List[dict], checked_at: str) 
     return {
         "activation_group": activation,
         "members_found": count,
-        "checked_at": checked_at,  # script run time (not membership add time)
-        "summary": f"found {count} {_member_word(count)}; checked_at={checked_at}",
+        "summary": f"found {count} {_member_word(count)}",
         "members": rows,
     }
 
@@ -239,10 +238,9 @@ def build_realtime_config(
             len(pairs),
         )
         for _, activation in pairs:
-            checked_at = datetime.now(timezone.utc).isoformat()
             members = gcp.list_group_user_memberships(activation)
             memberships_by_group[activation] = members
-            snapshot = _membership_snapshot(activation, members, checked_at)
+            snapshot = _membership_snapshot(activation, members)
             snapshots.append(snapshot)
             logging.info("%s: %s", activation, snapshot["summary"])
 
