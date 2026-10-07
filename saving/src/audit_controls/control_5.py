@@ -1,9 +1,12 @@
 """Control 5 — Non-privileged service accounts must not hold privileged IAM.
 
-Service accounts with Resource Manager tag privileged=false must not receive
-write, admin, secrets, impersonation, or IAM-policy-change capability. Same
-"not read-only" definition as Control 1 (policy YAML + permissions JSON).
-GCP resource labels are not used.
+Service accounts marked privileged=false (GCP label and/or Resource Manager
+tag) must not receive write, admin, secrets, impersonation, or IAM-policy-
+change capability. Same "not read-only" definition as Control 1 (policy YAML
++ permissions JSON).
+
+Foundation IaC often stores ``privileged: "false"`` as a **label** on the SA
+resource; Asset Inventory ``tags`` is a list of Tag messages (not a map).
 
 Positive CLI: python main.py control_5
 Finding code: C5-001
@@ -19,6 +22,7 @@ from typing import Dict, List, Optional, Set, Tuple
 
 import yaml
 from google.cloud import asset_v1
+from google.protobuf import field_mask_pb2
 
 from audit_controls.control_1 import (
     AllowEntry,
@@ -47,6 +51,9 @@ SA_ASSET_TYPE = "iam.googleapis.com/ServiceAccount"
 class SaTagPolicy:
     tag_key: str = "privileged"
     tag_value: str = "false"
+    # Foundation SA YAML ``privileged:`` usually lands as a GCP label.
+    match_labels: bool = True
+    match_tags: bool = True
 
 
 @dataclass
@@ -89,7 +96,23 @@ def load_sa_tag_policy() -> SaTagPolicy:
         os.environ.get("APP_CHECK_5_TAG_VALUE", "").strip()
         or str(data.get("tag_value") if data.get("tag_value") is not None else "false")
     )
-    return SaTagPolicy(tag_key=key, tag_value=str(value))
+
+    def _bool_opt(env_name: str, yaml_key: str, default: bool) -> bool:
+        raw = os.environ.get(env_name, "").strip().lower()
+        if raw in ("1", "true", "yes", "on"):
+            return True
+        if raw in ("0", "false", "no", "off"):
+            return False
+        if yaml_key in data and data.get(yaml_key) is not None:
+            return bool(data.get(yaml_key))
+        return default
+
+    return SaTagPolicy(
+        tag_key=key,
+        tag_value=str(value),
+        match_labels=_bool_opt("APP_CHECK_5_MATCH_LABELS", "match_labels", True),
+        match_tags=_bool_opt("APP_CHECK_5_MATCH_TAGS", "match_tags", True),
+    )
 
 
 def load_allowlist() -> List[AllowEntry]:
@@ -136,38 +159,110 @@ def _sa_email_from_resource_name(name: str) -> Optional[str]:
     return email
 
 
-def _tag_map_match(tags: dict, key: str, value: str) -> bool:
-    """Match Asset `tags` map (namespaced keys/values or short names)."""
-    if not tags:
-        return False
+def _key_value_match(key_text: str, value_text: str, key: str, value: str) -> bool:
+    """Match short or namespaced tag/label key and value."""
     key_l = key.lower()
     value_l = value.lower()
-    for tag_key, tag_value in tags.items():
-        key_text = str(tag_key).lower()
-        value_text = str(tag_value).lower()
-        key_ok = key_text == key_l or key_text.endswith("/" + key_l) or key_text.endswith(
-            "/tagkeys/" + key_l
-        )
-        value_ok = (
-            value_text == value_l
-            or value_text.endswith("/" + value_l)
-            or value_text.endswith("/tagvalues/" + value_l)
-            or value_text.rsplit("/", 1)[-1] == value_l
-        )
-        if key_ok and value_ok:
+    kt = (key_text or "").lower()
+    vt = (value_text or "").lower()
+    key_ok = (
+        kt == key_l
+        or kt.endswith("/" + key_l)
+        or kt.endswith("/tagkeys/" + key_l)
+        or kt.rsplit("/", 1)[-1] == key_l
+    )
+    value_ok = (
+        vt == value_l
+        or vt.endswith("/" + value_l)
+        or vt.endswith("/tagvalues/" + value_l)
+        or vt.rsplit("/", 1)[-1] == value_l
+    )
+    return key_ok and value_ok
+
+
+def _tag_map_match(pairs: dict, key: str, value: str) -> bool:
+    if not pairs:
+        return False
+    for tag_key, tag_value in pairs.items():
+        if _key_value_match(str(tag_key), str(tag_value), key, value):
             return True
     return False
+
+
+def _map_field_as_dict(raw) -> dict:
+    """Normalize a protobuf map / dict field to {str: str}."""
+    if not raw:
+        return {}
+    if isinstance(raw, dict):
+        return {str(k): str(v) for k, v in raw.items()}
+    if hasattr(raw, "items"):
+        try:
+            return {str(k): str(v) for k, v in raw.items()}
+        except (TypeError, ValueError):
+            return {}
+    return {}
+
+
+def _attached_tags_as_dict(result) -> dict:
+    """Build key→value from Asset ``tags`` (list of Tag) or legacy tag_keys/values.
+
+    Modern Asset Inventory returns ``tags`` as repeated Tag messages
+    (``tag_key`` / ``tag_value``). Calling ``dict(tags)`` raises TypeError;
+    treating it as a map via ``.items()`` yields an empty dict and silent
+    zero matches.
+    """
+    out: dict = {}
+    raw_tags = getattr(result, "tags", None)
+    if raw_tags:
+        # Legacy map shape (older clients)
+        if isinstance(raw_tags, dict) or (
+            hasattr(raw_tags, "items")
+            and not hasattr(raw_tags, "append")
+            and not isinstance(raw_tags, (list, tuple))
+        ):
+            try:
+                maybe = {str(k): str(v) for k, v in raw_tags.items()}
+                # Map values should be strings, not Tag messages
+                if maybe and all(
+                    not hasattr(v, "tag_key") and not hasattr(v, "tag_value")
+                    for v in maybe.values()
+                ):
+                    out.update(maybe)
+            except (TypeError, ValueError):
+                pass
+        for item in list(raw_tags):
+            if isinstance(item, dict):
+                k = item.get("tag_key") or item.get("tagKey") or ""
+                v = item.get("tag_value") or item.get("tagValue") or ""
+            else:
+                k = getattr(item, "tag_key", None) or getattr(item, "tagKey", None) or ""
+                v = (
+                    getattr(item, "tag_value", None)
+                    or getattr(item, "tagValue", None)
+                    or ""
+                )
+            if k:
+                out[str(k)] = str(v)
+
+    keys = list(getattr(result, "tag_keys", None) or [])
+    vals = list(getattr(result, "tag_values", None) or [])
+    if keys and vals and len(keys) == len(vals):
+        for k, v in zip(keys, vals):
+            out[str(k)] = str(v)
+    elif keys:
+        for k in keys:
+            out.setdefault(str(k), "")
+    return out
 
 
 def _effective_tags_match(effective_tags, key: str, value: str) -> bool:
     if not effective_tags:
         return False
-    key_l = key.lower()
-    value_l = value.lower()
     for item in effective_tags:
-        # proto message or dict after conversion
         if isinstance(item, dict):
-            ns_key = str(item.get("namespaced_tag_key") or item.get("namespacedTagKey") or "")
+            ns_key = str(
+                item.get("namespaced_tag_key") or item.get("namespacedTagKey") or ""
+            )
             ns_val = str(
                 item.get("namespaced_tag_value") or item.get("namespacedTagValue") or ""
             )
@@ -178,76 +273,145 @@ def _effective_tags_match(effective_tags, key: str, value: str) -> bool:
             ns_key = str(getattr(item, "namespaced_tag_key", "") or "")
             ns_val = str(getattr(item, "namespaced_tag_value", "") or "")
             attached = str(getattr(item, "attached_tag_value", "") or "")
-        key_text = ns_key.lower()
-        value_text = (ns_val or attached).lower()
-        key_ok = (
-            key_text == key_l
-            or key_text.endswith("/" + key_l)
-            or key_text.rsplit("/", 1)[-1] == key_l
-        )
-        value_ok = (
-            value_text == value_l
-            or value_text.endswith("/" + value_l)
-            or value_text.rsplit("/", 1)[-1] == value_l
-        )
-        if key_ok and value_ok:
+        if _key_value_match(ns_key, ns_val or attached, key, value):
             return True
     return False
 
 
-def _tags_as_dict(raw) -> dict:
-    """Normalize Asset ResourceSearchResult.tags (MapComposite) to a plain dict.
-
-    ``dict(map)`` fails when the map iterates as keys only:
-    TypeError: cannot convert dictionary update sequence element #0 to a sequence
-    """
-    if not raw:
-        return {}
-    if isinstance(raw, dict):
-        return {str(k): str(v) for k, v in raw.items()}
-    if hasattr(raw, "items"):
-        return {str(k): str(v) for k, v in raw.items()}
-    return {}
-
-
-def sa_matches_non_privileged_tag(result, policy: SaTagPolicy) -> bool:
-    """True if this Asset SA result has Resource Manager tag privileged=false."""
+def sa_matches_non_privileged_marker(result, policy: SaTagPolicy) -> bool:
+    """True if SA has privileged=false as a label and/or Resource Manager tag."""
     key = policy.tag_key
     value = policy.tag_value
-    tags = _tags_as_dict(getattr(result, "tags", None))
-    effective = list(getattr(result, "effective_tags", None) or [])
-    return _tag_map_match(tags, key, value) or _effective_tags_match(
-        effective, key, value
-    )
+    if policy.match_labels:
+        labels = _map_field_as_dict(getattr(result, "labels", None))
+        if _tag_map_match(labels, key, value):
+            return True
+    if policy.match_tags:
+        tags = _attached_tags_as_dict(result)
+        if _tag_map_match(tags, key, value):
+            return True
+        effective = list(getattr(result, "effective_tags", None) or [])
+        if _effective_tags_match(effective, key, value):
+            return True
+    return False
+
+
+def _sa_email_from_result(result) -> Optional[str]:
+    email = _sa_email_from_resource_name(getattr(result, "name", "") or "")
+    if email:
+        return email
+    display = (getattr(result, "display_name", "") or "").strip().lower()
+    if "@" in display:
+        return display
+    # additional_attributes.email on some Asset SA results
+    attrs = getattr(result, "additional_attributes", None)
+    if attrs:
+        if isinstance(attrs, dict):
+            extra = str(attrs.get("email") or "").strip().lower()
+        else:
+            # Struct / MapComposite
+            try:
+                extra = str(attrs.get("email") or "").strip().lower()
+            except Exception:
+                extra = ""
+        if "@" in extra:
+            return extra
+    return None
 
 
 def collect_non_privileged_service_accounts(
     scope: str, credentials, policy: SaTagPolicy
 ) -> Set[str]:
-    """Return SA emails that carry Resource Manager tag privileged=false."""
+    """Return SA emails marked privileged=false (label and/or RM tag)."""
     client = asset_v1.AssetServiceClient(credentials=credentials)
-    request = asset_v1.SearchAllResourcesRequest(
-        scope=scope,
-        asset_types=[SA_ASSET_TYPE],
-        page_size=500,
+    # Include effective_tags explicitly (not always in the default mask).
+    read_mask = field_mask_pb2.FieldMask(
+        paths=[
+            "name",
+            "display_name",
+            "labels",
+            "tags",
+            "tag_keys",
+            "tag_values",
+            "effective_tags",
+            "additional_attributes",
+        ]
     )
+
+    # Prefer server-side filter (labels from foundation YAML; tags if bound).
+    queries: List[str] = []
+    if policy.match_labels:
+        queries.append(f"labels.{policy.tag_key}:{policy.tag_value}")
+    if policy.match_tags:
+        queries.append(f"tagKeys:{policy.tag_key}")
+        queries.append(f"effectiveTagKeys:{policy.tag_key}")
+
     found: Set[str] = set()
-    for result in client.search_all_resources(request=request):
-        if not sa_matches_non_privileged_tag(result, policy):
-            continue
-        email = _sa_email_from_resource_name(getattr(result, "name", "") or "")
-        if not email:
-            # Fallback: display_name is sometimes the email for SAs
-            display = (getattr(result, "display_name", "") or "").strip().lower()
-            if "@" in display:
-                email = display
+    scanned = 0
+    with_labels = 0
+    with_tags = 0
+    seen_names: Set[str] = set()
+
+    def _consume(result) -> None:
+        nonlocal scanned, with_labels, with_tags
+        name = getattr(result, "name", "") or ""
+        if name in seen_names:
+            return
+        seen_names.add(name)
+        scanned += 1
+        labels = _map_field_as_dict(getattr(result, "labels", None))
+        tags = _attached_tags_as_dict(result)
+        effective = list(getattr(result, "effective_tags", None) or [])
+        if labels:
+            with_labels += 1
+        if tags or effective:
+            with_tags += 1
+        if not sa_matches_non_privileged_marker(result, policy):
+            return
+        email = _sa_email_from_result(result)
         if email:
             found.add(email)
+
+    # Query-scoped searches first (fast path when markers exist in Asset).
+    for query in queries:
+        request = asset_v1.SearchAllResourcesRequest(
+            scope=scope,
+            asset_types=[SA_ASSET_TYPE],
+            query=query,
+            page_size=500,
+            read_mask=read_mask,
+        )
+        try:
+            for result in client.search_all_resources(request=request):
+                _consume(result)
+        except Exception as exc:
+            logger.warning(
+                "Asset SA query %r failed (%s); continuing", query, exc
+            )
+
+    # Full SA scan fallback when queries returned nothing (query syntax /
+    # indexing gaps) so we still evaluate labels/tags client-side.
+    if not found:
+        request = asset_v1.SearchAllResourcesRequest(
+            scope=scope,
+            asset_types=[SA_ASSET_TYPE],
+            page_size=500,
+            read_mask=read_mask,
+        )
+        for result in client.search_all_resources(request=request):
+            _consume(result)
+
     logger.info(
-        "Asset SA scan complete: %d service account(s) with %s=%s",
+        "Asset SA scan complete: %d service account(s) with %s=%s "
+        "(scanned=%d with_labels=%d with_tags=%d match_labels=%s match_tags=%s)",
         len(found),
         policy.tag_key,
         policy.tag_value,
+        scanned,
+        with_labels,
+        with_tags,
+        policy.match_labels,
+        policy.match_tags,
     )
     return found
 
@@ -291,10 +455,13 @@ def evaluate(credentials=None) -> List[Violation]:
     iam = _iam_service(credentials)
 
     logger.info(
-        "Control 5 SA audit: scope=%s tag=%s=%s always=%d verbs=%d metadata_perms=%d",
+        "Control 5 SA audit: scope=%s marker=%s=%s labels=%s tags=%s "
+        "always=%d verbs=%d metadata_perms=%d",
         scope,
         tag_policy.tag_key,
         tag_policy.tag_value,
+        tag_policy.match_labels,
+        tag_policy.match_tags,
         len(ro_policy.always_restricted),
         len(ro_policy.verbs),
         len(metadata_map),
