@@ -1,0 +1,15 @@
+# Control 5 — Non-privileged service accounts must not hold privileged IAM
+#
+# Service accounts with Resource Manager tag privileged=false must only
+# receive read-only-safe permissions. Privileged write / admin / secrets /
+# impersonation → finding C5-001.
+#
+# Permission denylist is the same definition as Control 1 (RO policy YAML +
+# permissions JSON). This file only configures which SAs are in scope
+# (Resource Manager tag match — not GCP labels).
+#
+# Override path: APP_CHECK_5_POLICY
+# Override tag: APP_CHECK_5_TAG_KEY / APP_CHECK_5_TAG_VALUE
+
+tag_key: privileged
+tag_value: "false"

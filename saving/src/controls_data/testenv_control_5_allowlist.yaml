@@ -1,0 +1,9 @@
+# Control 5 expected exceptions.
+#
+# A restricted permission on a privileged=false service account is not a
+# finding when the IAM resource is one of these projects and the permission
+# is listed here. Anything else still fails C5-001.
+#
+# Override path: APP_CHECK_5_ALLOWLIST
+
+whitelisted_entries: []
