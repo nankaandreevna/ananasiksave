@@ -116,6 +116,38 @@ def write_privileged_group_pair_snapshots(
     return str(out)
 
 
+def write_control_1_ro_bindings_realtime(
+    path: str,
+    groups: List[Dict[str, Any]],
+    generated_at: str,
+    scope: str,
+    readonly_suffix: str,
+    binding_count: int,
+    note: str = "",
+) -> str:
+    """Write Control 1 realtime YAML: every *_RO group with IAM bindings found."""
+    payload: Dict[str, Any] = {
+        "generated_at": generated_at,
+        "scope": scope,
+        "readonly_suffix": readonly_suffix,
+        "ro_groups_with_bindings_count": len(groups),
+        "binding_count": binding_count,
+        "ro_groups": groups,
+    }
+    if note:
+        payload["note"] = note
+    out = Path(path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with out.open("w", encoding="utf-8") as handle:
+        handle.write(
+            "# Generated at Control 1 run. Overwritten each run. Do not edit.\n"
+            "# Every group:* ending with readonly_suffix that has ≥1 IAM binding.\n"
+            "# Proves the Asset scan coverage (groups with zero bindings are omitted).\n"
+        )
+        yaml.safe_dump(payload, handle, sort_keys=False, allow_unicode=True)
+    return str(out)
+
+
 def write_control_5_findings_realtime(
     path: str,
     findings: List[Dict[str, Any]],

@@ -13,6 +13,10 @@ Checks (in order) for each IAM binding on an RO group:
 
 Positive CLI: python main.py control_1
 Finding code: C1-001
+
+Realtime inventory (gitignored, overwritten each run):
+  controls_data/testenv_control_1_all_RO_groups_bindings_realtime.yaml
+Override path: APP_CHECK_1_BINDINGS
 """
 
 from __future__ import annotations
@@ -21,14 +25,16 @@ import json
 import logging
 import os
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 import yaml
 from google.cloud import asset_v1
 from googleapiclient import discovery
 from googleapiclient.errors import HttpError
 
+from audit_tool.framework.config import write_control_1_ro_bindings_realtime
 from audit_tool.framework.gcp_client import (
     authorized_http,
     load_gcp_credentials,
@@ -37,6 +43,7 @@ from audit_tool.framework.gcp_client import (
 from audit_tool.framework.paths import (
     CONTROL_1_ALLOWLIST,
     CONTROL_1_PERMISSIONS,
+    CONTROL_1_RO_BINDINGS_REALTIME,
     CONTROL_1_RO_POLICY,
 )
 from audit_tool.framework.runtime import validate_auth_runtime
@@ -152,6 +159,73 @@ def _allowlist_path() -> Path:
     if override:
         return Path(override)
     return CONTROL_1_ALLOWLIST
+
+
+def _bindings_realtime_path() -> Path:
+    override = os.environ.get("APP_CHECK_1_BINDINGS", "").strip()
+    if override:
+        return Path(override)
+    return CONTROL_1_RO_BINDINGS_REALTIME
+
+
+def _write_ro_bindings_realtime(
+    scope: str,
+    readonly_suffix: str,
+    bindings: List[Tuple[str, str, str]],
+) -> str:
+    """Overwrite realtime YAML listing every *_RO group binding from Asset."""
+    by_group: Dict[str, List[Dict[str, str]]] = {}
+    for member, role, resource in bindings:
+        by_group.setdefault(member, []).append({"role": role, "resource": resource})
+
+    groups: List[Dict[str, Any]] = []
+    for group_email in sorted(by_group.keys()):
+        rows = sorted(
+            by_group[group_email],
+            key=lambda r: (r["role"], r["resource"]),
+        )
+        # De-dupe identical role+resource pairs
+        seen: Set[Tuple[str, str]] = set()
+        unique: List[Dict[str, str]] = []
+        for row in rows:
+            key = (row["role"], row["resource"])
+            if key in seen:
+                continue
+            seen.add(key)
+            unique.append(row)
+        groups.append(
+            {
+                "group": group_email,
+                "bindings_found": len(unique),
+                "bindings": unique,
+            }
+        )
+
+    note = ""
+    if not groups:
+        note = (
+            f"No group: members ending with {readonly_suffix!r} appeared in any "
+            "IAM binding in scope. Directory may still have *_RO groups with "
+            "zero bindings — those are outside Control 1 (Asset IAM only)."
+        )
+
+    path = write_control_1_ro_bindings_realtime(
+        path=str(_bindings_realtime_path()),
+        groups=groups,
+        generated_at=datetime.now(timezone.utc).isoformat(),
+        scope=scope,
+        readonly_suffix=readonly_suffix,
+        binding_count=sum(g["bindings_found"] for g in groups),
+        note=note,
+    )
+    logger.info(
+        "Wrote realtime Control 1 RO bindings inventory to %s "
+        "(%d group(s), %d binding(s))",
+        path,
+        len(groups),
+        sum(g["bindings_found"] for g in groups),
+    )
+    return path
 
 
 def load_allowlist() -> List[AllowEntry]:
@@ -528,6 +602,7 @@ def evaluate(credentials=None) -> List[Violation]:
         len(ro_groups),
         ", ".join(ro_groups[:20]) + ("…" if len(ro_groups) > 20 else ""),
     )
+    _write_ro_bindings_realtime(scope, policy.readonly_suffix, bindings)
 
     role_cache: Dict[str, List[str]] = {}
     violations: List[Violation] = []
