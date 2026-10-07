@@ -1,6 +1,6 @@
 # Control 1 — Read-Only Group Permission Validation (Org / testenv audit policy)
 #
-# docs: groups whose local name ends with readonly_suffix (default `_RO`)
+# Confluence: groups whose local name ends with readonly_suffix (default `_RO`)
 # must not receive write, admin, secrets-access, crypto-use, impersonation,
 # or IAM-policy-change capabilities.
 #
@@ -25,7 +25,7 @@ metadata_restricted_types:
   - DATA_WRITE
   - SENSITIVE_DATA_READ
 
-# Exact permissions that always fail (bank denylist — even if missing from metadata JSON).
+# Exact permissions that always fail (org denylist — even if missing from metadata JSON).
 always_restricted_permissions:
   # Impersonation / token minting
   - iam.serviceAccounts.actAs
@@ -185,6 +185,17 @@ restricted_permission_substrings:
   - container.pods.exec
   - run.services.setIamPolicy
   - orgpolicy.policy.set
+
+# Predefined roles/* that are RO by GCP design — skip entirely (Control 1 + 5).
+# Custom projects/.../roles/... are never skipped. Stops false positives like
+# cloudkms.locations.generateRandomBytes on roles/cloudkms.viewer.
+safe_predefined_role_patterns:
+  - .viewer
+  - /viewer
+  - .browser
+  - /browser
+  - .reader
+  - /reader
 
 # Role name leaf / full-name patterns (fail before expand when matched)
 # Bare "admin" catches *Admin roles (securityAdmin, storage.admin, …).

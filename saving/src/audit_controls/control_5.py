@@ -37,6 +37,7 @@ from audit_controls.control_1 import (
     permission_is_allowlisted,
     permission_is_restricted,
     resolve_audit_scope,
+    role_is_safe_readonly_predefined,
     _iam_service,
     _project_id,
 )
@@ -552,6 +553,9 @@ def evaluate(credentials=None) -> List[Violation]:
         }
 
     for member, role, resource in bindings:
+        # Predefined RO roles (roles/*.viewer etc.) — same skip as Control 1.
+        if role_is_safe_readonly_predefined(role, ro_policy):
+            continue
         # Scope is marker-only (privileged=false). Do not fail on role name
         # patterns — only expanded permissions decide privileged vs not.
         if role not in role_cache:

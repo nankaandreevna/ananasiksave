@@ -79,6 +79,16 @@ _FALLBACK_SAFE = frozenset(
 )
 
 
+_FALLBACK_SAFE_PREDEFINED_ROLE_PATTERNS = (
+    ".viewer",
+    "/viewer",
+    ".browser",
+    "/browser",
+    ".reader",
+    "/reader",
+)
+
+
 @dataclass
 class RoPolicy:
     readonly_suffix: str = "_RO"
@@ -90,6 +100,10 @@ class RoPolicy:
     permission_substrings: List[str] = field(default_factory=list)
     role_name_substrings: List[str] = field(default_factory=list)
     always_restricted: Set[str] = field(default_factory=set)
+    # Predefined roles/* that are RO by GCP design (e.g. roles/cloudkms.viewer).
+    safe_predefined_role_patterns: List[str] = field(
+        default_factory=lambda: list(_FALLBACK_SAFE_PREDEFINED_ROLE_PATTERNS)
+    )
 
 
 @dataclass
@@ -245,6 +259,12 @@ def load_ro_policy() -> RoPolicy:
         if str(p).strip()
     }
 
+    safe_roles = [
+        str(s).strip().lower()
+        for s in (data.get("safe_predefined_role_patterns") or [])
+        if str(s).strip()
+    ] or list(_FALLBACK_SAFE_PREDEFINED_ROLE_PATTERNS)
+
     return RoPolicy(
         readonly_suffix=suffix,
         metadata_types=types,
@@ -261,6 +281,7 @@ def load_ro_policy() -> RoPolicy:
             if str(s).strip()
         ],
         always_restricted=always,
+        safe_predefined_role_patterns=safe_roles,
     )
 
 
@@ -308,7 +329,29 @@ def is_readonly_group_member(member: str, suffix: str) -> bool:
     return local.endswith(suffix.lower())
 
 
+def role_is_safe_readonly_predefined(role: str, policy: RoPolicy) -> bool:
+    """True for predefined roles/* that are clearly read-only (viewer/browser/reader).
+
+    Custom roles (projects/…/roles/…) are never skipped here. Skipped roles do
+    not produce Control 1 / Control 5 findings even if a bundled permission
+    would otherwise match a verb (e.g. generateRandomBytes on cloudkms.viewer).
+    """
+    r = (role or "").strip().lower()
+    if not r.startswith("roles/"):
+        return False
+    for needle in policy.safe_predefined_role_patterns:
+        if needle and needle in r:
+            return True
+    dotted = r.rsplit(".", 1)[-1]
+    if dotted in ("viewer", "browser", "reader"):
+        return True
+    leaf = r.rsplit("/", 1)[-1]
+    return leaf in ("viewer", "browser", "reader")
+
+
 def role_name_is_restricted(role: str, policy: RoPolicy) -> Optional[str]:
+    if role_is_safe_readonly_predefined(role, policy):
+        return None
     r = role.lower()
     for needle in policy.role_name_substrings:
         if needle and needle in r:
@@ -493,6 +536,8 @@ def evaluate(credentials=None) -> List[Violation]:
     allowlisted_permissions: Set[str] = set()
 
     for member, role, resource in bindings:
+        if role_is_safe_readonly_predefined(role, policy):
+            continue
         name_reason = role_name_is_restricted(role, policy)
         if name_reason:
             if role_is_allowlisted(resource, role, allowlist):
