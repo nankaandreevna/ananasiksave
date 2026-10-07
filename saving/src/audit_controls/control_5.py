@@ -195,11 +195,26 @@ def _effective_tags_match(effective_tags, key: str, value: str) -> bool:
     return False
 
 
+def _tags_as_dict(raw) -> dict:
+    """Normalize Asset ResourceSearchResult.tags (MapComposite) to a plain dict.
+
+    ``dict(map)`` fails when the map iterates as keys only:
+    TypeError: cannot convert dictionary update sequence element #0 to a sequence
+    """
+    if not raw:
+        return {}
+    if isinstance(raw, dict):
+        return {str(k): str(v) for k, v in raw.items()}
+    if hasattr(raw, "items"):
+        return {str(k): str(v) for k, v in raw.items()}
+    return {}
+
+
 def sa_matches_non_privileged_tag(result, policy: SaTagPolicy) -> bool:
     """True if this Asset SA result has Resource Manager tag privileged=false."""
     key = policy.tag_key
     value = policy.tag_value
-    tags = dict(getattr(result, "tags", None) or {})
+    tags = _tags_as_dict(getattr(result, "tags", None))
     effective = list(getattr(result, "effective_tags", None) or [])
     return _tag_map_match(tags, key, value) or _effective_tags_match(
         effective, key, value
