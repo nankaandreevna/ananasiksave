@@ -671,9 +671,10 @@ def _write_findings_realtime(
     """Overwrite Control 1 findings YAML (failures + allowlisted with note)."""
     by_group: Dict[str, List[Dict[str, Any]]] = {}
 
+    # item = ((member, role, resource), row_dict) — sort by the tuple key only
     for (member, _role, _resource), row in sorted(
         binding_findings.items(),
-        key=lambda item: (item[0], item[1][1], item[1][2]),
+        key=lambda item: item[0],
     ):
         group = _group_email_only(member)
         violated = sorted(row.get("violated_permissions") or [])
