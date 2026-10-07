@@ -83,6 +83,8 @@ def write_activation_group_snapshots(
     with out.open("w", encoding="utf-8") as handle:
         handle.write(
             "# Generated at Control 2 run. Activation groups only. Do not edit.\n"
+            "# checked_at = script run time. members[].added_at = joined activation group.\n"
+            "# members[].active_duration_hours = hours active as of checked_at.\n"
             "# members_found is 0 when Cloud Identity returned no user memberships.\n"
         )
         yaml.safe_dump(payload, handle, sort_keys=False, allow_unicode=True)

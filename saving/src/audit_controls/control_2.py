@@ -83,13 +83,33 @@ def _member_word(count: int) -> str:
     return "member" if count == 1 else "members"
 
 
+def _active_duration_hours(added_at: str, checked_at: str) -> Optional[float]:
+    """Hours from membership createTime to this Control 2 run."""
+    try:
+        added = _parse_rfc3339(added_at)
+        checked = _parse_rfc3339(checked_at)
+    except (TypeError, ValueError):
+        return None
+    return round((checked - added).total_seconds() / 3600.0, 2)
+
+
 def _membership_snapshot(activation: str, members: List[dict], checked_at: str) -> dict:
+    """Snapshot for realtime YAML.
+
+    ``checked_at`` = when this script ran (group-level).
+    Per member: ``added_at`` = Cloud Identity createTime (joined activation group);
+    ``active_duration_hours`` = hours since added_at as of checked_at.
+    """
     count = len(members)
     rows: List[dict] = []
     for member in members:
-        row = {
+        added_at = member.get("create_time")
+        row: dict = {
             "email": member.get("email"),
-            "create_time": member.get("create_time"),
+            "added_at": added_at,  # when user joined the activation group
+            "active_duration_hours": (
+                _active_duration_hours(added_at, checked_at) if added_at else None
+            ),
         }
         if member.get("expire_time"):
             row["expire_time"] = member["expire_time"]
@@ -97,7 +117,7 @@ def _membership_snapshot(activation: str, members: List[dict], checked_at: str) 
     return {
         "activation_group": activation,
         "members_found": count,
-        "checked_at": checked_at,
+        "checked_at": checked_at,  # script run time (not membership add time)
         "summary": f"found {count} {_member_word(count)}; checked_at={checked_at}",
         "members": rows,
     }

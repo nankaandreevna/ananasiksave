@@ -221,8 +221,8 @@ class GcpPolicyClient:
     def __init__(self, load_policies: bool = True) -> None:
         # Group emails come from GOOGLE_GROUP_DOMAIN_NAME, not GOOGLE_DOMAIN_NAME.
         # Control 1 reads full group: members from Asset and does not rewrite domain.
-        # Current env (testenv) is @testenv.example. A later org/SA will use
-        # @example.com by changing only this env var — do not hardcode it here.
+        # Current env (testenv) is @testenv.example. A later org/SA will use @example.com
+        # by changing only this env var — do not hardcode example.com here.
         self.group_domain = os.environ["GOOGLE_GROUP_DOMAIN_NAME"].lower()
         self.credentials = load_gcp_credentials()
         self._asset = asset_v1.AssetServiceClient(credentials=self.credentials)
@@ -284,7 +284,10 @@ class GcpPolicyClient:
 
         Uses Cloud Identity groups.memberships (Admin Directory members.list has
         no createTime — insufficient for TEALAS 24h expiry).
-        Returns dicts: email, create_time, expire_time (optional).
+
+        ``view=FULL`` is required: BASIC omits createTime (null in snapshots).
+
+        Returns dicts: email, create_time (added_at), expire_time (optional).
         """
         from googleapiclient.errors import HttpError
 
@@ -306,7 +309,7 @@ class GcpPolicyClient:
                 self._cloudidentity_service()
                 .groups()
                 .memberships()
-                .list(parent=parent)
+                .list(parent=parent, view="FULL")
             )
             while request is not None:
                 response = request.execute()
@@ -327,10 +330,38 @@ class GcpPolicyClient:
                         if detail.get("expireTime"):
                             expire_time = detail["expireTime"]
                             break
+                    create_time = item.get("createTime")
+                    # BASIC responses omit createTime; FULL should include it.
+                    # If still missing, fetch the membership resource by name.
+                    if not create_time and item.get("name"):
+                        try:
+                            detail = (
+                                self._cloudidentity_service()
+                                .groups()
+                                .memberships()
+                                .get(name=item["name"])
+                                .execute()
+                            )
+                            create_time = detail.get("createTime") or create_time
+                            if not expire_time:
+                                for role in detail.get("roles") or []:
+                                    exp = (role.get("expiryDetail") or {}).get(
+                                        "expireTime"
+                                    )
+                                    if exp:
+                                        expire_time = exp
+                                        break
+                        except HttpError as get_exc:
+                            logger.warning(
+                                "membership get failed for %s in %s: %s",
+                                member_email,
+                                email,
+                                get_exc,
+                            )
                     members.append(
                         {
                             "email": member_email,
-                            "create_time": item.get("createTime"),
+                            "create_time": create_time,
                             "expire_time": expire_time,
                         }
                     )
@@ -436,10 +467,9 @@ class GcpPolicyClient:
     def list_all_directory_groups(self) -> List[dict]:
         """List Workspace groups via Admin Directory groups.list.
 
-        Prefers groups().list(domain=GOOGLE_GROUP_DOMAIN_NAME) so the current
-        env lists groups on that domain. GOOGLE_CUSTOMER_ID is only a fallback
-        (later org). Returns list of dicts: email, name, id — emails are
-        written as returned.
+        Prefers groups().list(domain=GOOGLE_GROUP_DOMAIN_NAME) so testenv lists
+        @testenv.example groups. GOOGLE_CUSTOMER_ID is only a fallback (later org).
+        Returns list of dicts: email, name, id — emails are written as returned.
         """
         from googleapiclient.errors import HttpError
 
