@@ -11,7 +11,7 @@ resource; Asset Inventory ``tags`` is a list of Tag messages (not a map).
 Positive CLI: python main.py control_5
 Finding code: C5-001
 
-Realtime findings (gitignored, overwritten each run):
+Realtime findings (gitignored, overwritten each run) — violators only:
   controls_data/testenv_control_5_findings_realtime.yaml
 Override path: APP_CHECK_5_FINDINGS
 """
@@ -599,7 +599,6 @@ def evaluate(credentials=None) -> List[Violation]:
     findings_path = _write_findings_realtime(
         scope=scope,
         tag_policy=tag_policy,
-        sa_markers=sa_markers,
         violations=violations,
     )
     logger.info("Wrote realtime Control 5 findings to %s", findings_path)
@@ -643,21 +642,10 @@ def evaluate(credentials=None) -> List[Violation]:
 def _write_findings_realtime(
     scope: str,
     tag_policy: SaTagPolicy,
-    sa_markers: Dict[str, Dict[str, str]],
     violations: List[Violation],
 ) -> str:
-    """Overwrite Control 5 realtime findings YAML (SA + tag + role + permissions)."""
+    """Overwrite Control 5 realtime YAML with violation findings only."""
     generated_at = datetime.now(timezone.utc).isoformat()
-    matched = [
-        {
-            "service_account": email,
-            "tag": info.get("tag", f"{tag_policy.tag_key}={tag_policy.tag_value}"),
-            "tag_source": info.get("tag_source", ""),
-            "raw_key": info.get("raw_key", ""),
-            "raw_value": info.get("raw_value", ""),
-        }
-        for email, info in sorted(sa_markers.items())
-    ]
 
     # Group violated permissions under (SA, tag, role, resource)
     grouped: Dict[Tuple[str, str, str, str, str], Dict[str, Any]] = {}
@@ -685,16 +673,15 @@ def _write_findings_realtime(
         row["permissions"] = sorted(row["permissions"])
 
     note = ""
-    if not matched:
+    if not findings:
         note = (
-            f"No service accounts matched {tag_policy.tag_key}={tag_policy.tag_value} "
-            "(label/tag). findings is empty."
+            f"No Control 5 violations for SAs marked "
+            f"{tag_policy.tag_key}={tag_policy.tag_value}."
         )
 
     return write_control_5_findings_realtime(
         path=str(_findings_path()),
         findings=findings,
-        matched_service_accounts=matched,
         generated_at=generated_at,
         scope=scope,
         marker_key=tag_policy.tag_key,
