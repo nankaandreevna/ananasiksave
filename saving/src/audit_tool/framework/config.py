@@ -139,7 +139,7 @@ def write_control_5_findings_realtime(
     with out.open("w", encoding="utf-8") as handle:
         handle.write(
             "# Generated at Control 5 run. Overwritten each run. Do not edit.\n"
-            "# findings only: SAs that violated Control 5 (SA + tag + role + permissions).\n"
+            "# findings only: service_account, tag, role, resource, permissions.\n"
             "# Tagged SAs with no privileged permissions are omitted.\n"
         )
         yaml.safe_dump(payload, handle, sort_keys=False, allow_unicode=True)

@@ -648,25 +648,21 @@ def _write_findings_realtime(
     generated_at = datetime.now(timezone.utc).isoformat()
 
     # Group violated permissions under (SA, tag, role, resource)
-    grouped: Dict[Tuple[str, str, str, str, str], Dict[str, Any]] = {}
+    grouped: Dict[Tuple[str, str, str, str], Dict[str, Any]] = {}
     for v in violations:
-        gkey = (v.service_account, v.tag, v.tag_source, v.role, v.resource)
+        gkey = (v.service_account, v.tag, v.role, v.resource)
         row = grouped.get(gkey)
         if row is None:
             row = {
                 "service_account": v.service_account,
                 "tag": v.tag,
-                "tag_source": v.tag_source,
                 "role": v.role,
                 "resource": v.resource,
                 "permissions": [],
-                "reasons": [],
             }
             grouped[gkey] = row
         if v.permission not in row["permissions"]:
             row["permissions"].append(v.permission)
-        if v.reason and v.reason not in row["reasons"]:
-            row["reasons"].append(v.reason)
 
     findings = list(grouped.values())
     for row in findings:
