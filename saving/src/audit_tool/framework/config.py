@@ -156,6 +156,37 @@ def write_control_1_ro_bindings_realtime(
     return str(out)
 
 
+def write_control_1_findings_realtime(
+    path: str,
+    findings: List[Dict[str, Any]],
+    generated_at: str,
+    scope: str,
+    finding_count: int,
+    allowlisted_count: int,
+    note: str = "",
+) -> str:
+    """Write Control 1 realtime YAML: failed + allowlisted binding findings."""
+    payload: Dict[str, Any] = {
+        "generated_at": generated_at,
+        "scope": scope,
+        "finding_count": finding_count,
+        "allowlisted_count": allowlisted_count,
+        "findings": findings,
+    }
+    if note:
+        payload["note"] = note
+    out = Path(path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with out.open("w", encoding="utf-8") as handle:
+        handle.write(
+            "# Generated at Control 1 run. Overwritten each run. Do not edit.\n"
+            "# findings: failed RO-group bindings (and allowlisted hits with note).\n"
+            "# group = email only (no group: prefix). bindings[].violated_permissions.\n"
+        )
+        yaml.safe_dump(payload, handle, sort_keys=False, allow_unicode=True)
+    return str(out)
+
+
 def write_control_5_findings_realtime(
     path: str,
     findings: List[Dict[str, Any]],
