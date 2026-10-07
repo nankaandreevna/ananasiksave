@@ -14,10 +14,9 @@ Checks (in order) for each IAM binding on an RO group:
 Positive CLI: python main.py control_1
 Finding code: C1-001
 
-Realtime inventory (gitignored, overwritten each run):
-  controls_data/testenv_control_1_all_RO_groups_bindings_realtime.yaml
+Realtime findings (gitignored, overwritten each run):
   controls_data/testenv_control_1_findings_realtime.yaml
-Override paths: APP_CHECK_1_BINDINGS, APP_CHECK_1_FINDINGS
+Override path: APP_CHECK_1_FINDINGS
 """
 
 from __future__ import annotations
@@ -38,7 +37,6 @@ from googleapiclient.errors import HttpError
 from audit_tool.framework.config import (
     local_group_name,
     write_control_1_findings_realtime,
-    write_control_1_ro_bindings_realtime,
 )
 from audit_tool.framework.gcp_client import (
     GcpPolicyClient,
@@ -50,7 +48,6 @@ from audit_tool.framework.paths import (
     CONTROL_1_ALLOWLIST,
     CONTROL_1_FINDINGS_REALTIME,
     CONTROL_1_PERMISSIONS,
-    CONTROL_1_RO_BINDINGS_REALTIME,
     CONTROL_1_RO_POLICY,
 )
 from audit_tool.framework.runtime import validate_auth_runtime
@@ -176,13 +173,6 @@ def _allowlist_path() -> Path:
     return CONTROL_1_ALLOWLIST
 
 
-def _bindings_realtime_path() -> Path:
-    override = os.environ.get("APP_CHECK_1_BINDINGS", "").strip()
-    if override:
-        return Path(override)
-    return CONTROL_1_RO_BINDINGS_REALTIME
-
-
 def _findings_realtime_path() -> Path:
     override = os.environ.get("APP_CHECK_1_FINDINGS", "").strip()
     if override:
@@ -219,73 +209,6 @@ def _directory_ro_group_emails(suffixes: List[str]) -> List[str]:
         if is_readonly_local_name(local_group_name(email), suffixes):
             emails.append(email)
     return sorted(set(emails))
-
-
-def _write_ro_bindings_realtime(
-    scope: str,
-    readonly_suffix: str,
-    readonly_suffixes: List[str],
-    bindings: List[Tuple[str, str, str]],
-    directory_ro_groups: Optional[List[str]] = None,
-) -> str:
-    """Overwrite realtime YAML listing every *_RO group binding from Asset."""
-    by_group: Dict[str, List[Dict[str, str]]] = {}
-    for member, role, resource in bindings:
-        by_group.setdefault(member, []).append({"role": role, "resource": resource})
-
-    groups: List[Dict[str, Any]] = []
-    for group_email in sorted(by_group.keys()):
-        rows = sorted(
-            by_group[group_email],
-            key=lambda r: (r["role"], r["resource"]),
-        )
-        # De-dupe identical role+resource pairs
-        seen: Set[Tuple[str, str]] = set()
-        unique: List[Dict[str, str]] = []
-        for row in rows:
-            key = (row["role"], row["resource"])
-            if key in seen:
-                continue
-            seen.add(key)
-            unique.append(row)
-        groups.append(
-            {
-                "group": group_email,
-                "bindings_found": len(unique),
-                "bindings": unique,
-            }
-        )
-
-    directory_list = directory_ro_groups or []
-    binding_count = sum(g["bindings_found"] for g in groups)
-    note = ""
-    if not groups:
-        note = (
-            f"No group: members ending with {readonly_suffixes!r} appeared in any "
-            "IAM binding in scope."
-        )
-
-    path = write_control_1_ro_bindings_realtime(
-        path=str(_bindings_realtime_path()),
-        groups=groups,
-        generated_at=datetime.now(timezone.utc).isoformat(),
-        scope=scope,
-        readonly_suffix=readonly_suffix,
-        readonly_suffixes=readonly_suffixes,
-        binding_count=binding_count,
-        directory_ro_groups_count=len(directory_list),
-        directory_ro_groups=directory_list,
-        note=note,
-    )
-    logger.info(
-        "Wrote realtime Control 1 RO bindings inventory to %s "
-        "(directory_ro=%d with_bindings=%d binding_rows=%d)",
-        path,
-        len(directory_list),
-        len(groups),
-        binding_count,
-    )
-    return path
 
 
 def load_allowlist() -> List[AllowEntry]:
@@ -549,7 +472,7 @@ def permission_is_restricted(
     perm = permission.strip()
     perm_l = perm.lower()
 
-    # 1) Exact bank denylist
+    # 1) Exact denylist
     if perm_l in policy.always_restricted:
         return f"always_restricted ({permission})"
 
@@ -686,10 +609,11 @@ def _write_findings_realtime(
         }
         if allowlisted_perms:
             entry["allowlisted_permissions"] = allowlisted_perms
-        if row.get("role_name_hit"):
-            entry["role_name_hit"] = row["role_name_hit"]
         if row.get("note") == "whitelisted":
             entry["note"] = "whitelisted"
+        # Skip empty rows (e.g. role-name-only hits with no permission evidence)
+        if not violated and not allowlisted_perms and entry.get("note") != "whitelisted":
+            continue
         by_group.setdefault(group, []).append(entry)
 
     finding_bindings = 0
@@ -697,10 +621,7 @@ def _write_findings_realtime(
     for entries in by_group.values():
         for entry in entries:
             is_wl = entry.get("note") == "whitelisted"
-            has_fail = bool(entry.get("violated_permissions")) or (
-                bool(entry.get("role_name_hit")) and not is_wl
-            )
-            if has_fail:
+            if entry.get("violated_permissions") and not is_wl:
                 finding_bindings += 1
             if is_wl:
                 allowlisted_bindings += 1
@@ -801,14 +722,6 @@ def evaluate(credentials=None) -> List[Violation]:
             len(without_bindings),
         )
 
-    _write_ro_bindings_realtime(
-        scope,
-        policy.readonly_suffix,
-        policy.readonly_suffixes,
-        bindings,
-        directory_ro_groups=directory_ro,
-    )
-
     role_cache: Dict[str, List[str]] = {}
     violations: List[Violation] = []
     seen: Set[Tuple[str, str, str, str]] = set()
@@ -839,7 +752,6 @@ def evaluate(credentials=None) -> List[Violation]:
                 allowlisted_projects.add(_project_id(resource))
                 row = _binding_row(member, role, resource)
                 row["note"] = "whitelisted"
-                row["role_name_hit"] = name_reason
                 logger.info(
                     "Allowlisted role %s on %s for %s (%s)",
                     role,
@@ -866,8 +778,6 @@ def evaluate(credentials=None) -> List[Violation]:
                             message=message,
                         )
                     )
-                    row = _binding_row(member, role, resource)
-                    row["role_name_hit"] = name_reason
             # Still expand to list every bad permission (detailed audit evidence)
 
         if role not in role_cache:

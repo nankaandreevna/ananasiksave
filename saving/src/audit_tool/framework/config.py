@@ -116,45 +116,6 @@ def write_privileged_group_pair_snapshots(
     return str(out)
 
 
-def write_control_1_ro_bindings_realtime(
-    path: str,
-    groups: List[Dict[str, Any]],
-    generated_at: str,
-    scope: str,
-    readonly_suffix: str,
-    binding_count: int,
-    directory_ro_groups_count: int = 0,
-    directory_ro_groups: Optional[List[str]] = None,
-    readonly_suffixes: Optional[List[str]] = None,
-    note: str = "",
-) -> str:
-    """Write Control 1 realtime YAML: every RO-suffixed group with IAM bindings."""
-    payload: Dict[str, Any] = {
-        "generated_at": generated_at,
-        "scope": scope,
-        "readonly_suffix": readonly_suffix,
-        "readonly_suffixes": readonly_suffixes
-        or ([readonly_suffix] if readonly_suffix else []),
-        "directory_ro_groups_count": directory_ro_groups_count,
-        "ro_groups_with_bindings_count": len(groups),
-        "binding_count": binding_count,
-        "directory_ro_groups": directory_ro_groups or [],
-        "ro_groups_with_bindings": groups,
-    }
-    if note:
-        payload["note"] = note
-    out = Path(path)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    with out.open("w", encoding="utf-8") as handle:
-        handle.write(
-            "# Generated at Control 1 run. Overwritten each run. Do not edit.\n"
-            "# directory_ro_groups = Directory groups ending with any readonly_suffixes\n"
-            "#   (e.g. _RO and ro — includes …cloudadminro@… without underscore).\n"
-            "# ro_groups_with_bindings = those that appear in ≥1 IAM binding (checked).\n"
-        )
-        yaml.safe_dump(payload, handle, sort_keys=False, allow_unicode=True)
-    return str(out)
-
 
 def write_control_1_findings_realtime(
     path: str,
