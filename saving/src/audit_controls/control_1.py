@@ -1,8 +1,8 @@
 """Control 1 — Read-Only Group Permission Validation (audit-grade).
 
-RO groups (local name ends with suffix, default `_RO`) must not receive write,
-admin, secrets-access, crypto-use, impersonation, or IAM-policy-change
-capabilities.
+RO groups (local name ends with `_RO` or `ro` before @domain — with or without
+underscore) must not receive write, admin, secrets-access, crypto-use,
+impersonation, or IAM-policy-change capabilities.
 
 Checks (in order) for each IAM binding on an RO group:
   1) Role name patterns (owner / editor / *admin* / …)
@@ -100,9 +100,17 @@ _FALLBACK_SAFE_PREDEFINED_ROLE_PATTERNS = (
 )
 
 
+_FALLBACK_RO_SUFFIXES = ("_RO", "ro")
+
+
 @dataclass
 class RoPolicy:
-    readonly_suffix: str = "_RO"
+    readonly_suffix: str = "_RO"  # primary label for logs
+    # Local-part endings before @domain (case-insensitive). Includes bare "ro"
+    # for names like gcp_staging_cloudadminro@… (no underscore).
+    readonly_suffixes: List[str] = field(
+        default_factory=lambda: list(_FALLBACK_RO_SUFFIXES)
+    )
     metadata_types: Set[str] = field(
         default_factory=lambda: {"ADMIN_WRITE", "DATA_WRITE", "SENSITIVE_DATA_READ"}
     )
@@ -172,8 +180,8 @@ def _bindings_realtime_path() -> Path:
     return CONTROL_1_RO_BINDINGS_REALTIME
 
 
-def _directory_ro_group_emails(suffix: str) -> List[str]:
-    """All Directory group emails whose local name ends with readonly_suffix."""
+def _directory_ro_group_emails(suffixes: List[str]) -> List[str]:
+    """All Directory group emails whose local name ends with an RO suffix."""
     try:
         gcp = GcpPolicyClient(load_policies=False)
         listed = gcp.list_all_directory_groups()
@@ -185,13 +193,12 @@ def _directory_ro_group_emails(suffix: str) -> List[str]:
         )
         return []
 
-    suffix_l = suffix.lower()
     emails: List[str] = []
     for item in listed:
         email = (item.get("email") or item.get("name") or "").strip().lower()
         if not email or "@" not in email:
             continue
-        if local_group_name(email).endswith(suffix_l):
+        if is_readonly_local_name(local_group_name(email), suffixes):
             emails.append(email)
     return sorted(set(emails))
 
@@ -199,6 +206,7 @@ def _directory_ro_group_emails(suffix: str) -> List[str]:
 def _write_ro_bindings_realtime(
     scope: str,
     readonly_suffix: str,
+    readonly_suffixes: List[str],
     bindings: List[Tuple[str, str, str]],
     directory_ro_groups: Optional[List[str]] = None,
 ) -> str:
@@ -235,7 +243,7 @@ def _write_ro_bindings_realtime(
     note = ""
     if not groups:
         note = (
-            f"No group: members ending with {readonly_suffix!r} appeared in any "
+            f"No group: members ending with {readonly_suffixes!r} appeared in any "
             "IAM binding in scope."
         )
 
@@ -245,6 +253,7 @@ def _write_ro_bindings_realtime(
         generated_at=datetime.now(timezone.utc).isoformat(),
         scope=scope,
         readonly_suffix=readonly_suffix,
+        readonly_suffixes=readonly_suffixes,
         binding_count=binding_count,
         directory_ro_groups_count=len(directory_list),
         directory_ro_groups=directory_list,
@@ -338,6 +347,19 @@ def load_ro_policy() -> RoPolicy:
     suffix = os.environ.get("READONLY_SUFFIX", "").strip() or str(
         data.get("readonly_suffix") or "_RO"
     )
+    suffixes_env = os.environ.get("READONLY_SUFFIXES", "").strip()
+    if suffixes_env:
+        suffixes = [s.strip() for s in suffixes_env.split(",") if s.strip()]
+    else:
+        suffixes = [
+            str(s).strip()
+            for s in (data.get("readonly_suffixes") or [])
+            if str(s).strip()
+        ]
+    if not suffixes:
+        suffixes = [suffix] if suffix else list(_FALLBACK_RO_SUFFIXES)
+    # Longest first so "_RO" wins over "ro" when both match.
+    suffixes = sorted(set(suffixes), key=lambda s: (-len(s), s.lower()))
     verbs_env = os.environ.get("RESTRICTED_VERBS", "").strip()
     if verbs_env:
         verbs = {v.strip().lower() for v in verbs_env.split(",") if v.strip()}
@@ -374,6 +396,7 @@ def load_ro_policy() -> RoPolicy:
 
     return RoPolicy(
         readonly_suffix=suffix,
+        readonly_suffixes=suffixes,
         metadata_types=types,
         verbs=verbs,
         safe_verbs=safe,
@@ -429,11 +452,26 @@ def _group_local_name(member: str) -> Optional[str]:
     return identity.split("@", 1)[0]
 
 
-def is_readonly_group_member(member: str, suffix: str) -> bool:
+def is_readonly_local_name(local_name: str, suffixes: List[str]) -> bool:
+    """True if group local-part ends with any configured RO suffix (_RO, ro, …)."""
+    local_l = (local_name or "").strip().lower()
+    if not local_l:
+        return False
+    for suffix in suffixes:
+        s = (suffix or "").strip().lower()
+        if s and local_l.endswith(s):
+            return True
+    return False
+
+
+def is_readonly_group_member(member: str, suffixes) -> bool:
+    """True if IAM member is group:… ending with an RO suffix before @domain."""
     local = _group_local_name(member)
     if not local:
         return False
-    return local.endswith(suffix.lower())
+    if isinstance(suffixes, str):
+        suffixes = [suffixes]
+    return is_readonly_local_name(local, list(suffixes))
 
 
 def role_is_safe_readonly_predefined(role: str, policy: RoPolicy) -> bool:
@@ -587,9 +625,9 @@ def get_role_permissions(iam, role_name: str) -> List[str]:
 
 
 def collect_ro_group_bindings(
-    scope: str, credentials, suffix: str
+    scope: str, credentials, suffixes: List[str]
 ) -> List[Tuple[str, str, str]]:
-    """(group_member, role, resource) for every IAM binding on *_RO groups."""
+    """(group_member, role, resource) for every IAM binding on RO-suffixed groups."""
     client = asset_v1.AssetServiceClient(credentials=credentials)
     request = asset_v1.SearchAllIamPoliciesRequest(
         scope=scope, query="memberTypes:group", page_size=500
@@ -602,7 +640,7 @@ def collect_ro_group_bindings(
         for binding in search_result.policy.bindings:
             role = binding.role
             for member in binding.members:
-                if is_readonly_group_member(member, suffix):
+                if is_readonly_group_member(member, suffixes):
                     found.append((member, role, resource))
     logger.info("Asset IAM scan complete: %d RO group binding(s)", len(found))
     return found
@@ -617,10 +655,10 @@ def evaluate(credentials=None) -> List[Violation]:
     iam = _iam_service(credentials)
 
     logger.info(
-        "Control 1 RO audit: scope=%s suffix=%r always=%d verbs=%d substrings=%d "
+        "Control 1 RO audit: scope=%s suffixes=%s always=%d verbs=%d substrings=%d "
         "role_patterns=%d metadata_perms=%d",
         scope,
-        policy.readonly_suffix,
+        policy.readonly_suffixes,
         len(policy.always_restricted),
         len(policy.verbs),
         len(policy.permission_substrings),
@@ -628,18 +666,20 @@ def evaluate(credentials=None) -> List[Violation]:
         len(metadata_map),
     )
 
-    directory_ro = _directory_ro_group_emails(policy.readonly_suffix)
-    bindings = collect_ro_group_bindings(scope, credentials, policy.readonly_suffix)
+    directory_ro = _directory_ro_group_emails(policy.readonly_suffixes)
+    bindings = collect_ro_group_bindings(
+        scope, credentials, policy.readonly_suffixes
+    )
     ro_groups = sorted({m for m, _, _ in bindings})
     binding_rows = len(bindings)
 
     logger.info(
         "Control 1 RO coverage: directory_ro_groups=%d "
-        "ro_groups_with_bindings=%d bindings_checked=%d suffix=%r",
+        "ro_groups_with_bindings=%d bindings_checked=%d suffixes=%s",
         len(directory_ro),
         len(ro_groups),
         binding_rows,
-        policy.readonly_suffix,
+        policy.readonly_suffixes,
     )
     if directory_ro:
         sample_dir = ", ".join(directory_ro[:20]) + (
@@ -672,6 +712,7 @@ def evaluate(credentials=None) -> List[Violation]:
     _write_ro_bindings_realtime(
         scope,
         policy.readonly_suffix,
+        policy.readonly_suffixes,
         bindings,
         directory_ro_groups=directory_ro,
     )

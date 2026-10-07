@@ -1,8 +1,12 @@
 # Control 1 — Read-Only Group Permission Validation (Org / testenv audit policy)
 #
-# Confluence: groups whose local name ends with readonly_suffix (default `_RO`)
+# Groups whose local name ends with any readonly_suffixes entry (before @domain)
 # must not receive write, admin, secrets-access, crypto-use, impersonation,
 # or IAM-policy-change capabilities.
+#
+# Examples matched:
+#   gcp_billing_RO@…          (_RO)
+#   gcp_staging_cloudadminro@… (ro without underscore)
 #
 # Finding code: C1-001
 #
@@ -14,9 +18,12 @@
 #   5) Restricted verbs on the permission last segment
 #
 # Override paths: APP_CHECK_1_POLICY, APP_CHECK_1_PERMISSIONS
-# Override suffix / verbs: READONLY_SUFFIX, RESTRICTED_VERBS
+# Override suffixes / verbs: READONLY_SUFFIXES (comma-list), READONLY_SUFFIX, RESTRICTED_VERBS
 
 readonly_suffix: "_RO"
+readonly_suffixes:
+  - "_RO"
+  - "ro"
 
 # Permission types / reasons from control_1_permissions.json that always fail.
 # ADMIN_WRITE / DATA_WRITE = mutating. SENSITIVE_DATA_READ = secret/crypto/exfil-style reads.
