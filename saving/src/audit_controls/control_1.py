@@ -368,17 +368,35 @@ def permission_is_restricted(
     if len(parts) < 2:
         return None
     action = parts[-1]
-    if action in policy.safe_verbs:
-        return None
+    # Exact safe verbs, or read-style compounds (listTagBindings, getIamPolicy, …).
+    # always_restricted / substrings already caught getAccessToken etc. above.
+    for safe in policy.safe_verbs:
+        s = safe.lower()
+        if action == s or action.startswith(s):
+            return None
     for verb in policy.verbs:
         v = verb.lower()
         if action == v or action.startswith(v):
             return f"mutating/sensitive verb '{verb}' on {permission}"
         # compound: useToDecrypt, signBlob, generateAccessToken, …
-        if len(v) >= 4 and v in action:
+        # Require the verb at a camelCase boundary so "bind" does not match
+        # inside listTagBindings (…Tag + Bindings).
+        if len(v) >= 4 and _verb_at_camel_boundary(action, v):
             return f"mutating/sensitive verb '{verb}' on {permission}"
 
     return None
+
+
+def _verb_at_camel_boundary(action_l: str, verb_l: str) -> bool:
+    """Match restricted verb as whole action or trailing compound (useToDecrypt).
+
+    Avoids false positives like ``bind`` inside ``listTagBindings``.
+    """
+    if verb_l == action_l:
+        return True
+    if action_l.endswith(verb_l) and len(action_l) > len(verb_l):
+        return True
+    return False
 
 
 def _iam_service(credentials):
