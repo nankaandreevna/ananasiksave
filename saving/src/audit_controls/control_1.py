@@ -34,8 +34,12 @@ from google.cloud import asset_v1
 from googleapiclient import discovery
 from googleapiclient.errors import HttpError
 
-from audit_tool.framework.config import write_control_1_ro_bindings_realtime
+from audit_tool.framework.config import (
+    local_group_name,
+    write_control_1_ro_bindings_realtime,
+)
 from audit_tool.framework.gcp_client import (
+    GcpPolicyClient,
     authorized_http,
     load_gcp_credentials,
     resolve_credentials_identity,
@@ -168,10 +172,35 @@ def _bindings_realtime_path() -> Path:
     return CONTROL_1_RO_BINDINGS_REALTIME
 
 
+def _directory_ro_group_emails(suffix: str) -> List[str]:
+    """All Directory group emails whose local name ends with readonly_suffix."""
+    try:
+        gcp = GcpPolicyClient(load_policies=False)
+        listed = gcp.list_all_directory_groups()
+    except Exception as exc:
+        logger.warning(
+            "Could not list Directory groups for RO inventory (%s); "
+            "logging Asset-only counts",
+            exc,
+        )
+        return []
+
+    suffix_l = suffix.lower()
+    emails: List[str] = []
+    for item in listed:
+        email = (item.get("email") or item.get("name") or "").strip().lower()
+        if not email or "@" not in email:
+            continue
+        if local_group_name(email).endswith(suffix_l):
+            emails.append(email)
+    return sorted(set(emails))
+
+
 def _write_ro_bindings_realtime(
     scope: str,
     readonly_suffix: str,
     bindings: List[Tuple[str, str, str]],
+    directory_ro_groups: Optional[List[str]] = None,
 ) -> str:
     """Overwrite realtime YAML listing every *_RO group binding from Asset."""
     by_group: Dict[str, List[Dict[str, str]]] = {}
@@ -201,12 +230,13 @@ def _write_ro_bindings_realtime(
             }
         )
 
+    directory_list = directory_ro_groups or []
+    binding_count = sum(g["bindings_found"] for g in groups)
     note = ""
     if not groups:
         note = (
             f"No group: members ending with {readonly_suffix!r} appeared in any "
-            "IAM binding in scope. Directory may still have *_RO groups with "
-            "zero bindings — those are outside Control 1 (Asset IAM only)."
+            "IAM binding in scope."
         )
 
     path = write_control_1_ro_bindings_realtime(
@@ -215,15 +245,18 @@ def _write_ro_bindings_realtime(
         generated_at=datetime.now(timezone.utc).isoformat(),
         scope=scope,
         readonly_suffix=readonly_suffix,
-        binding_count=sum(g["bindings_found"] for g in groups),
+        binding_count=binding_count,
+        directory_ro_groups_count=len(directory_list),
+        directory_ro_groups=directory_list,
         note=note,
     )
     logger.info(
         "Wrote realtime Control 1 RO bindings inventory to %s "
-        "(%d group(s), %d binding(s))",
+        "(directory_ro=%d with_bindings=%d binding_rows=%d)",
         path,
+        len(directory_list),
         len(groups),
-        sum(g["bindings_found"] for g in groups),
+        binding_count,
     )
     return path
 
@@ -595,14 +628,53 @@ def evaluate(credentials=None) -> List[Violation]:
         len(metadata_map),
     )
 
+    directory_ro = _directory_ro_group_emails(policy.readonly_suffix)
     bindings = collect_ro_group_bindings(scope, credentials, policy.readonly_suffix)
     ro_groups = sorted({m for m, _, _ in bindings})
+    binding_rows = len(bindings)
+
     logger.info(
-        "RO groups with bindings: %d (%s)",
+        "Control 1 RO coverage: directory_ro_groups=%d "
+        "ro_groups_with_bindings=%d bindings_checked=%d suffix=%r",
+        len(directory_ro),
         len(ro_groups),
-        ", ".join(ro_groups[:20]) + ("…" if len(ro_groups) > 20 else ""),
+        binding_rows,
+        policy.readonly_suffix,
     )
-    _write_ro_bindings_realtime(scope, policy.readonly_suffix, bindings)
+    if directory_ro:
+        sample_dir = ", ".join(directory_ro[:20]) + (
+            "…" if len(directory_ro) > 20 else ""
+        )
+        logger.info("Directory *_RO groups (%d): %s", len(directory_ro), sample_dir)
+    if ro_groups:
+        sample_bound = ", ".join(ro_groups[:20]) + (
+            "…" if len(ro_groups) > 20 else ""
+        )
+        logger.info(
+            "RO groups with IAM bindings checked (%d): %s",
+            len(ro_groups),
+            sample_bound,
+        )
+    else:
+        logger.info("RO groups with IAM bindings checked: 0")
+
+    without_bindings = []
+    if directory_ro:
+        bound_emails = {
+            m.split(":", 1)[-1].strip().lower() for m in ro_groups
+        }
+        without_bindings = [e for e in directory_ro if e not in bound_emails]
+        logger.info(
+            "Directory *_RO groups with no IAM bindings (not checked as bindings): %d",
+            len(without_bindings),
+        )
+
+    _write_ro_bindings_realtime(
+        scope,
+        policy.readonly_suffix,
+        bindings,
+        directory_ro_groups=directory_ro,
+    )
 
     role_cache: Dict[str, List[str]] = {}
     violations: List[Violation] = []

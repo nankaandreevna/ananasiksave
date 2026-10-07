@@ -2,7 +2,7 @@
 
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import yaml
 
@@ -123,6 +123,8 @@ def write_control_1_ro_bindings_realtime(
     scope: str,
     readonly_suffix: str,
     binding_count: int,
+    directory_ro_groups_count: int = 0,
+    directory_ro_groups: Optional[List[str]] = None,
     note: str = "",
 ) -> str:
     """Write Control 1 realtime YAML: every *_RO group with IAM bindings found."""
@@ -130,9 +132,11 @@ def write_control_1_ro_bindings_realtime(
         "generated_at": generated_at,
         "scope": scope,
         "readonly_suffix": readonly_suffix,
+        "directory_ro_groups_count": directory_ro_groups_count,
         "ro_groups_with_bindings_count": len(groups),
         "binding_count": binding_count,
-        "ro_groups": groups,
+        "directory_ro_groups": directory_ro_groups or [],
+        "ro_groups_with_bindings": groups,
     }
     if note:
         payload["note"] = note
@@ -141,8 +145,8 @@ def write_control_1_ro_bindings_realtime(
     with out.open("w", encoding="utf-8") as handle:
         handle.write(
             "# Generated at Control 1 run. Overwritten each run. Do not edit.\n"
-            "# Every group:* ending with readonly_suffix that has ≥1 IAM binding.\n"
-            "# Proves the Asset scan coverage (groups with zero bindings are omitted).\n"
+            "# directory_ro_groups = all Directory groups ending with readonly_suffix.\n"
+            "# ro_groups_with_bindings = those that appear in ≥1 IAM binding (checked).\n"
         )
         yaml.safe_dump(payload, handle, sort_keys=False, allow_unicode=True)
     return str(out)
