@@ -114,6 +114,41 @@ def write_privileged_group_pair_snapshots(
     return str(out)
 
 
+def write_control_5_findings_realtime(
+    path: str,
+    findings: List[Dict[str, Any]],
+    matched_service_accounts: List[Dict[str, Any]],
+    generated_at: str,
+    scope: str,
+    marker_key: str,
+    marker_value: str,
+    note: str = "",
+) -> str:
+    """Write Control 5 realtime YAML: matched SAs + role/permission findings."""
+    payload: Dict[str, Any] = {
+        "generated_at": generated_at,
+        "scope": scope,
+        "marker_key": marker_key,
+        "marker_value": marker_value,
+        "matched_service_accounts_count": len(matched_service_accounts),
+        "finding_count": len(findings),
+        "matched_service_accounts": matched_service_accounts,
+        "findings": findings,
+    }
+    if note:
+        payload["note"] = note
+    out = Path(path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with out.open("w", encoding="utf-8") as handle:
+        handle.write(
+            "# Generated at Control 5 run. Overwritten each run. Do not edit.\n"
+            "# matched_service_accounts: SAs with marker (label/tag) privileged=false.\n"
+            "# findings: SA + tag + role + violated permissions.\n"
+        )
+        yaml.safe_dump(payload, handle, sort_keys=False, allow_unicode=True)
+    return str(out)
+
+
 def load_config(path: str) -> Dict[str, Any]:
     config_path = Path(path)
     if not config_path.exists():

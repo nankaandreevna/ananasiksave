@@ -10,6 +10,10 @@ resource; Asset Inventory ``tags`` is a list of Tag messages (not a map).
 
 Positive CLI: python main.py control_5
 Finding code: C5-001
+
+Realtime findings (gitignored, overwritten each run):
+  controls_data/testenv_control_5_findings_realtime.yaml
+Override path: APP_CHECK_5_FINDINGS
 """
 
 from __future__ import annotations
@@ -18,7 +22,8 @@ import logging
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
+from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 import yaml
 from google.cloud import asset_v1
@@ -35,11 +40,16 @@ from audit_controls.control_1 import (
     _iam_service,
     _project_id,
 )
+from audit_tool.framework.config import write_control_5_findings_realtime
 from audit_tool.framework.gcp_client import (
     load_gcp_credentials,
     resolve_credentials_identity,
 )
-from audit_tool.framework.paths import CONTROL_5_ALLOWLIST, CONTROL_5_SA_POLICY
+from audit_tool.framework.paths import (
+    CONTROL_5_ALLOWLIST,
+    CONTROL_5_FINDINGS_REALTIME,
+    CONTROL_5_SA_POLICY,
+)
 from audit_tool.framework.runtime import validate_auth_runtime
 
 logger = logging.getLogger(__name__)
@@ -64,6 +74,8 @@ class Violation:
     permission: str
     reason: str
     message: str
+    tag: str = ""
+    tag_source: str = ""
 
 
 def _sa_policy_path() -> Path:
@@ -78,6 +90,14 @@ def _allowlist_path() -> Path:
     if override:
         return Path(override)
     return CONTROL_5_ALLOWLIST
+
+
+def _findings_path() -> Path:
+    """Realtime findings YAML path (overwritten each run; env override)."""
+    override = os.environ.get("APP_CHECK_5_FINDINGS", "").strip()
+    if override:
+        return Path(override)
+    return CONTROL_5_FINDINGS_REALTIME
 
 
 def load_sa_tag_policy() -> SaTagPolicy:
@@ -278,22 +298,53 @@ def _effective_tags_match(effective_tags, key: str, value: str) -> bool:
     return False
 
 
-def sa_matches_non_privileged_marker(result, policy: SaTagPolicy) -> bool:
-    """True if SA has privileged=false as a label and/or Resource Manager tag."""
+def _first_matching_pair(pairs: dict, key: str, value: str) -> Optional[Tuple[str, str]]:
+    for tag_key, tag_value in pairs.items():
+        if _key_value_match(str(tag_key), str(tag_value), key, value):
+            return str(tag_key), str(tag_value)
+    return None
+
+
+def resolve_sa_marker(result, policy: SaTagPolicy) -> Optional[Dict[str, str]]:
+    """Return marker metadata if SA is privileged=false (label and/or RM tag)."""
     key = policy.tag_key
     value = policy.tag_value
     if policy.match_labels:
         labels = _map_field_as_dict(getattr(result, "labels", None))
-        if _tag_map_match(labels, key, value):
-            return True
+        hit = _first_matching_pair(labels, key, value)
+        if hit:
+            raw_key, raw_value = hit
+            return {
+                "tag": f"{key}={value}",
+                "tag_source": "label",
+                "raw_key": raw_key,
+                "raw_value": raw_value,
+            }
     if policy.match_tags:
         tags = _attached_tags_as_dict(result)
-        if _tag_map_match(tags, key, value):
-            return True
+        hit = _first_matching_pair(tags, key, value)
+        if hit:
+            raw_key, raw_value = hit
+            return {
+                "tag": f"{key}={value}",
+                "tag_source": "tag",
+                "raw_key": raw_key,
+                "raw_value": raw_value,
+            }
         effective = list(getattr(result, "effective_tags", None) or [])
         if _effective_tags_match(effective, key, value):
-            return True
-    return False
+            return {
+                "tag": f"{key}={value}",
+                "tag_source": "effective_tag",
+                "raw_key": key,
+                "raw_value": value,
+            }
+    return None
+
+
+def sa_matches_non_privileged_marker(result, policy: SaTagPolicy) -> bool:
+    """True if SA has privileged=false as a label and/or Resource Manager tag."""
+    return resolve_sa_marker(result, policy) is not None
 
 
 def _sa_email_from_result(result) -> Optional[str]:
@@ -321,8 +372,8 @@ def _sa_email_from_result(result) -> Optional[str]:
 
 def collect_non_privileged_service_accounts(
     scope: str, credentials, policy: SaTagPolicy
-) -> Set[str]:
-    """Return SA emails marked privileged=false (label and/or RM tag)."""
+) -> Dict[str, Dict[str, str]]:
+    """Return email → marker info for SAs marked privileged=false."""
     client = asset_v1.AssetServiceClient(credentials=credentials)
     # Include effective_tags explicitly (not always in the default mask).
     read_mask = field_mask_pb2.FieldMask(
@@ -346,7 +397,7 @@ def collect_non_privileged_service_accounts(
         queries.append(f"tagKeys:{policy.tag_key}")
         queries.append(f"effectiveTagKeys:{policy.tag_key}")
 
-    found: Set[str] = set()
+    found: Dict[str, Dict[str, str]] = {}
     scanned = 0
     with_labels = 0
     with_tags = 0
@@ -366,11 +417,12 @@ def collect_non_privileged_service_accounts(
             with_labels += 1
         if tags or effective:
             with_tags += 1
-        if not sa_matches_non_privileged_marker(result, policy):
+        marker = resolve_sa_marker(result, policy)
+        if not marker:
             return
         email = _sa_email_from_result(result)
-        if email:
-            found.add(email)
+        if email and email not in found:
+            found[email] = marker
 
     # Query-scoped searches first (fast path when markers exist in Asset).
     for query in queries:
@@ -467,14 +519,21 @@ def evaluate(credentials=None) -> List[Violation]:
         len(metadata_map),
     )
 
-    sa_emails = collect_non_privileged_service_accounts(scope, credentials, tag_policy)
+    sa_markers = collect_non_privileged_service_accounts(
+        scope, credentials, tag_policy
+    )
+    sa_emails = set(sa_markers.keys())
     if sa_emails:
         sample = ", ".join(sorted(sa_emails)[:20])
         if len(sa_emails) > 20:
             sample += "…"
         logger.info("Non-privileged SAs in scope: %d (%s)", len(sa_emails), sample)
     else:
-        logger.info("No service accounts matched %s=%s", tag_policy.tag_key, tag_policy.tag_value)
+        logger.info(
+            "No service accounts matched %s=%s",
+            tag_policy.tag_key,
+            tag_policy.tag_value,
+        )
 
     bindings = collect_sa_bindings(scope, credentials, sa_emails)
     role_cache: Dict[str, List[str]] = {}
@@ -483,11 +542,21 @@ def evaluate(credentials=None) -> List[Violation]:
     allowlisted_projects: Set[str] = set()
     allowlisted_permissions: Set[str] = set()
 
+    def _marker_for_member(member: str) -> Dict[str, str]:
+        email = member.split(":", 1)[-1].strip().lower()
+        return sa_markers.get(email) or {
+            "tag": f"{tag_policy.tag_key}={tag_policy.tag_value}",
+            "tag_source": "unknown",
+            "raw_key": tag_policy.tag_key,
+            "raw_value": tag_policy.tag_value,
+        }
+
     for member, role, resource in bindings:
-        # Scope is tag-only (privileged=false). Do not fail on role name
+        # Scope is marker-only (privileged=false). Do not fail on role name
         # patterns — only expanded permissions decide privileged vs not.
         if role not in role_cache:
             role_cache[role] = get_role_permissions(iam, role)
+        marker = _marker_for_member(member)
 
         for permission in role_cache[role]:
             perm_reason = permission_is_restricted(permission, ro_policy, metadata_map)
@@ -522,8 +591,18 @@ def evaluate(credentials=None) -> List[Violation]:
                     permission=permission,
                     reason=perm_reason,
                     message=message,
+                    tag=marker.get("tag", ""),
+                    tag_source=marker.get("tag_source", ""),
                 )
             )
+
+    findings_path = _write_findings_realtime(
+        scope=scope,
+        tag_policy=tag_policy,
+        sa_markers=sa_markers,
+        violations=violations,
+    )
+    logger.info("Wrote realtime Control 5 findings to %s", findings_path)
 
     if violations and allowlisted_projects:
         logger.error(
@@ -559,6 +638,69 @@ def evaluate(credentials=None) -> List[Violation]:
             tag_policy.tag_value,
         )
     return violations
+
+
+def _write_findings_realtime(
+    scope: str,
+    tag_policy: SaTagPolicy,
+    sa_markers: Dict[str, Dict[str, str]],
+    violations: List[Violation],
+) -> str:
+    """Overwrite Control 5 realtime findings YAML (SA + tag + role + permissions)."""
+    generated_at = datetime.now(timezone.utc).isoformat()
+    matched = [
+        {
+            "service_account": email,
+            "tag": info.get("tag", f"{tag_policy.tag_key}={tag_policy.tag_value}"),
+            "tag_source": info.get("tag_source", ""),
+            "raw_key": info.get("raw_key", ""),
+            "raw_value": info.get("raw_value", ""),
+        }
+        for email, info in sorted(sa_markers.items())
+    ]
+
+    # Group violated permissions under (SA, tag, role, resource)
+    grouped: Dict[Tuple[str, str, str, str, str], Dict[str, Any]] = {}
+    for v in violations:
+        gkey = (v.service_account, v.tag, v.tag_source, v.role, v.resource)
+        row = grouped.get(gkey)
+        if row is None:
+            row = {
+                "service_account": v.service_account,
+                "tag": v.tag,
+                "tag_source": v.tag_source,
+                "role": v.role,
+                "resource": v.resource,
+                "permissions": [],
+                "reasons": [],
+            }
+            grouped[gkey] = row
+        if v.permission not in row["permissions"]:
+            row["permissions"].append(v.permission)
+        if v.reason and v.reason not in row["reasons"]:
+            row["reasons"].append(v.reason)
+
+    findings = list(grouped.values())
+    for row in findings:
+        row["permissions"] = sorted(row["permissions"])
+
+    note = ""
+    if not matched:
+        note = (
+            f"No service accounts matched {tag_policy.tag_key}={tag_policy.tag_value} "
+            "(label/tag). findings is empty."
+        )
+
+    return write_control_5_findings_realtime(
+        path=str(_findings_path()),
+        findings=findings,
+        matched_service_accounts=matched,
+        generated_at=generated_at,
+        scope=scope,
+        marker_key=tag_policy.tag_key,
+        marker_value=tag_policy.tag_value,
+        note=note,
+    )
 
 
 def run() -> int:
